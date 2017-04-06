@@ -315,14 +315,16 @@ classdef Cube
             
         %% Slicing %%
     
-        function obj = crop(obj,a,b)
+        function obj = crop(obj,tl,br)
             %CROP Spatial crop
-            % crop(a,b) crops the cube spatially to a rectangle defined by 
-            %           upper-left corner a and lower right corner b.
+            % crop([tlx, tly],[brx, bry]) crops the cube spatially to a 
+            %     rectangle defined by top left corner [tlx, tly] and
+            %     bottom right corner [brx, bty].
+            %             
             % TODO: Validate input more thoroughly
-            assert(obj.inIm(a(1),a(2)) && obj.inIm(b(1),b(2)),'Corners must be integer coordinates inside the image plane.');
-            obj.Data = obj.Data(a(2):b(2),a(1):b(1),:);
-            obj.History = {{'Cropped spatially',@crop,a,b}};
+            assert(obj.inIm(tl(1),tl(2)) && obj.inIm(br(1),br(2)),'Corners must be integer coordinates inside the image plane.');
+            obj.Data = obj.Data(tl(2):br(2),tl(1):br(1),:);
+            obj.History = {{'Cropped spatially',@crop,tl,br}};
         end
         
         function obj = bands(obj,b)
