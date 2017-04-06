@@ -282,16 +282,16 @@ classdef Cube
         
         %% Rearrangement %%
         
-        function obj = flipX(obj)
+        function obj = flipHoriz(obj)
             %FLIPX Flip the image upside-down
             obj.Data = flip(obj.Data,2);
-            obj.History = {{'Flipped horizontally',@flipX}};
+            obj.History = {{'Flipped horizontally',@flipHoriz}};
         end
         
-        function obj = flipY(obj)
+        function obj = flipVert(obj)
             %FLIPY Flip the image left-to-right
             obj.Data = flip(obj.Data,1);
-            obj.History = {{'Flipped vertically',@flipY}};
+            obj.History = {{'Flipped vertically',@flipVert}};
         end
         
         function obj = byCols(obj)
