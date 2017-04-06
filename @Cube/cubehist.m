@@ -29,7 +29,7 @@ end
 
 if nargin < 4
     nBins = 1000;
-    if obj.Normalized
+    if obj.Max < 1 && obj.Min > 0
         bin_edges = linspace(0, 1, nBins+1);
     else
         bin_edges = linspace(obj.Min, obj.Max, nBins+1);

@@ -27,7 +27,6 @@ classdef Cube
     % Always recalculated from the data so they are in sync
     properties (Dependent, SetAccess = 'private')
         Type   % Type of data (double, float etc.)
-        Normalized % Whether the data is between 0 and 1 (Boolean)
         Min    % Minimum value in the cube
         Max    % Maximum value in the cube
         Size   % Size of the data matrix ([Height, Width, Bands])
@@ -175,10 +174,6 @@ classdef Cube
         
         function value = get.Type(obj)
             value = class(obj.Data);
-        end
-        
-        function value = get.Normalized(obj)
-            value = obj.Max <= 1 && obj.Min >= 0;
         end
         
         function value = get.Min(obj)
