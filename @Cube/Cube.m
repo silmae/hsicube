@@ -69,7 +69,7 @@ classdef Cube
             br   = CA.Results.br;
             wr   = CA.Results.wr;
             wl   = CA.Results.wl;
-            wlu  = CA.Results.wlu;
+            wlu  = CA.Results.wlunit;
             fwhm = CA.Results.fwhm;
             hst  = CA.Results.history;
             
@@ -121,6 +121,17 @@ classdef Cube
                 % metadata from the given parameters
                 cube.Data = data;
                 cube.Quantity = qty;
+                % Construct default values if none were given
+                % (CubeArgs returned an empty array)
+                if isempty(wl)
+                    wl = 1:size(data,3);
+                end
+                if isempty(wlu)
+                    wlu = 'Layer index';
+                end
+                if isempty(fwhm)
+                    fwhm = zeros(1, size(data, 3));
+                end
                 cube.Wavelength = wl;
                 cube.Wavelength_Unit = wlu;
                 cube.FWHM = fwhm;

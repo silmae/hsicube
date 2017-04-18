@@ -22,13 +22,11 @@ classdef CubeArgs < inputParser
                 'Data source must be a valid filename or Cube object');
             CA.addRequired('data', dataValid);
             
-            %% Optional arguments
+            %% Optional name-value parameters
             
             qtyValid = @(x)assert(CA.isValidQuantity(x),...
                 'Quantity must be a non-empty char array');
-            CA.addRequired('quantity', qtyValid);
-            
-            %% Optional name-value parameters
+            CA.addParameter('quantity', 'Unknown', qtyValid);
             
             ftValid = @(x)assert(CA.isFileType(x),...
                 'File type must be one of\n %s',strjoin(CA.FILETYPES,'\n '));
@@ -44,15 +42,15 @@ classdef CubeArgs < inputParser
             
             WLValid = @(x)assert(CA.isValidWL(x),...
                 'Wavelength specification must be a numeric vector');
-            CA.addParameter('wl', 0, WLValid);
+            CA.addParameter('wl', [], WLValid);
             
             WLuValid = @(x)assert(CA.isValidWLu(x),...
                 'Wavelength unit must be a non-empty char array');
-            CA.addParameter('wlu', 'None', WLuValid);
+            CA.addParameter('wlunit', '', WLuValid);
             
             fwhmValid = @(x)assert(CA.isValidFWHM(x),...
                 'FWHM specification must be a numeric vector');
-            CA.addParameter('fwhm', 0, fwhmValid);
+            CA.addParameter('fwhm', [], fwhmValid);
             
             historyValid = @(x)assert(CA.isValidHistory(x),...
                 'History entries must be contained in a 1x1 cell array');
