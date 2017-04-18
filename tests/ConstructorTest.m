@@ -13,18 +13,14 @@ assert(isempty(Cube().Bands))
 assert(isempty(Cube().Wavelength))
 assert(isempty(Cube().FWHM))
 
-%% Test FormatIdentity
-c = Cube(uint64(cube));
+%% Test TypeIdentity
+c = Cube(double(cube));
 assert(isequal('double', class(c.Data)));
 assert(isequal('double', c.Type));
 
 c = Cube(single(cube));
 assert(isequal('single', class(c.Data)));
 assert(isequal('single', c.Type));
-
-c = Cube(logical(cube));
-assert(isequal('logical', class(c.Data)));
-assert(isequal('logical', c.Type));
 
 c = Cube(int8(cube));
 assert(isequal('int8', class(c.Data)));
@@ -54,7 +50,7 @@ c = Cube(int64(cube));
 assert(isequal('int64', class(c.Data)));
 assert(isequal('int64', c.Type));
 
-c = Cube(double(cube));
+c = Cube(uint64(cube));
 assert(isequal('uint64', class(c.Data)));
 assert(isequal('uint64', c.Type));
 
@@ -75,7 +71,7 @@ c = Cube(colvec);
 assert(isequal(colvec, c.Data))
 
 %% Test MetaIdentity
-c = Cube(cube, 'wlunit', 'nm', 'wl', wls, 'fwhm', fwhms);
+c = Cube(cube, 'quantity', 'Quantity', 'wlunit', 'Wavelength unit', 'wl', wls, 'fwhm', fwhms);
 
 assert(isequal(wls, c.Wavelength))
-assert(isequal(fwhm, c.FWHM))
+assert(isequal(fwhms, c.FWHM))
