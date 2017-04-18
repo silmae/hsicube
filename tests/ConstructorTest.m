@@ -19,17 +19,19 @@ c = Cube(cube);
 assert(isequal(cube, c.Data))
 assert(isequal(class(cube), class(c.Data)))
 
+%%
+
 %% Test DataIdentity_rowvec
 c = Cube(rowvec);
 
 assert(isequal(rowvec, c.Data))
 assert(isequal(class(rowvec), class(c.Data)))
 
-%% Test DataIdentity_rowvec
+%% Test DataIdentity_colvec
 c = Cube(colvec);
 
-assert(isequal(rowvec, c.Data))
-assert(isequal(class(rowvec), class(c.Data)))
+assert(isequal(colvec, c.Data))
+assert(isequal(class(colvec), class(c.Data)))
 
 %% Test MetaIdentity
 c = Cube(cube, 'wlunit', 'nm', 'wl', wls, 'fwhm', fwhms);
