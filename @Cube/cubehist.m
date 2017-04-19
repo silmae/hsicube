@@ -80,7 +80,7 @@ if showPlot
     end
     if length(obj.Wavelength) < 1
         ax.XTickLabels = num2str(obj.Wavelength(ax.XTick)');
-        xlabel(ax,{'Wavelength',obj.Wavelength_Unit});
+        xlabel(ax,{'Wavelength',obj.WavelengthUnit});
     end
     ylabel(ax,obj.Quantity);
     cb = colorbar('eastoutside');

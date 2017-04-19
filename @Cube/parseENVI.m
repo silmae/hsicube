@@ -8,10 +8,10 @@ function obj = parseENVI(obj, S)
 
 % Units aren't specified by the Specim NIR camera header
 if isfield(S,'wavelength_units')
-    obj.Wavelength_Unit = S.wavelength_units;
+    obj.WavelengthUnit = S.wavelength_units;
 else
     warning('Wavelength units not specified!');
-    obj.Wavelength_Unit = 'Unknown';
+    obj.WavelengthUnit = 'Unknown';
 end
 
 % Differing capitalization between Specim and VTT cameras

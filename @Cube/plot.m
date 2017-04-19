@@ -27,6 +27,6 @@ if strcmp(obj.Quantity,'Reflectance')
 end
 
 % Set labels based on metadata
-xlabel(h,{'Wavelength',obj.Wavelength_Unit});
+xlabel(h,{'Wavelength',obj.WavelengthUnit});
 ylabel(h,obj.Quantity);
 end

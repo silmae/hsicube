@@ -17,7 +17,7 @@ classdef Cube
         Data            = zeros(0,0,0) % The raw datacube
         Files           = {} % Full path(s) of the file(s) the cube corresponds to (if any)
         Quantity        = '' % Physical quantity of data
-        Wavelength_Unit = '' % Physical unit of the wavelengths
+        WavelengthUnit  = '' % Physical unit of the wavelengths
         Wavelength      = [] % Center wavelengths for each band
         FWHM            = [] % FWHM's for each band
         History         = {{'Object created'}} % Operation history for this cube
@@ -110,7 +110,7 @@ classdef Cube
                         cube.Files           = data;
                         cube.Quantity        = qty;
                         cube.Wavelength      = wl;
-                        cube.Wavelength_Unit = wlu;
+                        cube.WavelengthUnit  = wlu;
                         cube.FWHM            = fwhm;
                         cube.History  = {{'Data read from image file', @Cube, CA.Results}};
                     otherwise
@@ -133,7 +133,7 @@ classdef Cube
                     fwhm = zeros(1, size(data, 3));
                 end
                 cube.Wavelength = wl;
-                cube.Wavelength_Unit = wlu;
+                cube.WavelengthUnit = wlu;
                 cube.FWHM = fwhm;
 
                 cube.History = hst;
@@ -575,7 +575,7 @@ classdef Cube
             obj.Quantity   = qty;
             obj.Wavelength = wls;
             obj.FWHM       = fwhm;
-            obj.Wavelength_Unit = wlunit;
+            obj.WavelengthUnit = wlunit;
             obj.History    = {{'Applied a function on the data',...
                 @map, f, history, qty, wls, fwhm, wlunit}};
         end
@@ -681,7 +681,7 @@ classdef Cube
             % Generate ENVI header info
             info = enviinfo(obj.Data);
             info.description = ['{', strjoin(obj.Files, ' '), '}'];
-            info.wavelength_units = obj.Wavelength_Unit;
+            info.wavelength_units = obj.WavelengthUnit;
             info.wavelength = ['{', num2str(obj.Wavelength, '%f, '), '}'];
             info.fwhm = ['{', num2str(obj.FWHM, '%f, '), '}'];
             
