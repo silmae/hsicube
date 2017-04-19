@@ -179,7 +179,7 @@ assert(isequal(c2.Quantity, 'NewQuantity'));
 
 %% Test UpdateConstructor_WavelengthUnit
 c1 = Cube(cube, 'wlunit', 'OldWavelengthUnit');
-c2 = Cube(c1,   'wlunit', 'NewWavelenghtUnit');
+c2 = Cube(c1,   'wlunit', 'NewWavelengthUnit');
 
 assert(isequal(c1.WavelengthUnit, 'OldWavelengthUnit'));
 assert(isequal(c2.WavelengthUnit, 'NewWavelengthUnit'));
@@ -189,8 +189,8 @@ c1 = Cube(cube, 'wl', 1:4);
 c2 = Cube(c1,   'wl', 2:5);
 assert(isequal(c1.Wavelength, 1:4));
 assert(isequal(c2.Wavelength, 2:5));
-assert(isequal(c1.WavelengthUnit, default_wlu));
-assert(isequal(c2.WavelengthUnit, default_wlu));
+assert(isequal(c1.WavelengthUnit, default_wlu_with_given_wl));
+assert(isequal(c2.WavelengthUnit, default_wlu_with_given_wl));
 
 c1 = Cube(cube, 'wl', 1:4, 'wlunit', wlu);
 c2 = Cube(c1,   'wl', 2:5);
