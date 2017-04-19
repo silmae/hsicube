@@ -4,6 +4,9 @@ im     = magic(3);
 rowvec = [1 2 0 3];
 colvec = rowvec';
 
+% test metadata
+qty   = 'Quantity';
+wlu   = 'Wavelength unit';
 wls   = [0, 3, 1, 2];
 fwhms = [2, 1, 0.5, 3];
 
@@ -70,8 +73,78 @@ assert(isequal(rowvec, c.Data))
 c = Cube(colvec);
 assert(isequal(colvec, c.Data))
 
-%% Test MetaIdentity
-c = Cube(cube, 'quantity', 'Quantity', 'wlunit', 'Wavelength unit', 'wl', wls, 'fwhm', fwhms);
+%% Test DefaultQuantity
+c = Cube(cube);
+assert(isequal('Unknown', c.Quantity));
 
-assert(isequal(wls, c.Wavelength))
-assert(isequal(fwhms, c.FWHM))
+c = Cube(cube, 'quantity', qty);
+assert(isequal(qty, c.Quantity));
+
+%% Test DefaultWavelengthUnit
+c = Cube(cube);
+assert(isequal('Band index', c.WavelengthUnit));
+
+c = Cube(cube, 'wl', wls);
+assert(isequal('Unknown', c.WavelengthUnit));
+
+c = Cube(cube, 'fwhm', fwhms);
+assert(isequal('Band index', c.WavelengthUnit));
+
+c = Cube(cube, 'wl', wls, 'fwhm', fwhms);
+assert(isequal('Unknown', c.WavelengthUnit));
+
+c = Cube(cube, 'wlunit', wlu);
+assert(isequal(wlu, c.WavelengthUnit));
+
+c = Cube(cube, 'wlunit', wlu, 'wl', wls);
+assert(isequal(wlu, c.WavelengthUnit));
+
+c = Cube(cube, 'wlunit', wlu, 'fwhm', fwhms);
+assert(isequal(wlu, c.WavelengthUnit));
+
+c = Cube(cube, 'wlunit', wlu, 'wl', wls, 'fwhm', fwhms);
+assert(isequal(wlu, c.WavelengthUnit));
+
+%% Test DefaultWavelength
+c = Cube(cube);
+assert(isequal(1:size(cube,3), c.Wavelength));
+
+c = Cube(cube, 'wlunit', wlu);
+assert(isequal(1:size(cube,3), c.Wavelength));
+
+c = Cube(cube, 'fwhm', fwhms);
+assert(isequal(1:size(cube,3), c.Wavelength));
+
+c = Cube(cube, 'wl', wls);
+assert(isequal(wls, c.Wavelength));
+
+c = Cube(cube, 'wl', wls, 'fwhm', fwhms);
+assert(isequal(wls, c.Wavelength));
+
+c = Cube(cube, 'wl', wls, 'wlunit', wlu);
+assert(isequal(wls, c.Wavelength));
+
+c = Cube(cube, 'wl', wls, 'fwhm', fwhms, 'wlunit', wlu);
+assert(isequal(wls, c.Wavelength));
+
+%% Test DefaultFWHM
+c = Cube(cube);
+assert(isequal(zeros(1, size(cube,3)), c.FWHM));
+
+c = Cube(cube, 'wlunit', wlu);
+assert(isequal(zeros(1, size(cube,3)), c.FWHM));
+
+c = Cube(cube, 'wl', wls);
+assert(isequal(zeros(1, size(cube,3)), c.FWHM));
+
+c = Cube(cube, 'fwhm', fwhms);
+assert(isequal(fwhms, c.FWHM));
+
+c = Cube(cube, 'fwhm', fwhms, 'wlunit', wlu);
+assert(isequal(fwhms, c.FWHM));
+
+c = Cube(cube, 'fwhm', fwhms, 'wl', wls);
+assert(isequal(fwhms, c.FWHM));
+
+c = Cube(cube, 'fwhm', fwhms, 'wl', wls, 'wlunit', wlu);
+assert(isequal(fwhms, c.FWHM));
