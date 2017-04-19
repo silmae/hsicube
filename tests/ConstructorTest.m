@@ -1,14 +1,23 @@
-% non-trivial data matrices 
-cube   = cat(3, ones(2,3), -ones(2,3), 2*ones(2,3), -2*ones(2,3));
+% different-sized data matrices
 im     = magic(3);
 rowvec = [1 2 0 3];
 colvec = rowvec';
 
-% test metadata
+% test cube with 4 bands and non-square dimensions (size [2,3,4])
+cube   = cat(3, ones(2,3), -ones(2,3), 2*ones(2,3), -2*ones(2,3));
+
+% test metadata matching the cube
 qty   = 'Quantity';
 wlu   = 'Wavelength unit';
 wls   = [0, 3, 1, 2];
 fwhms = [2, 1, 0.5, 3];
+
+% expected default values for missing parameters for the cube
+default_qty  = 'Unknown';
+default_wlu  = 'Band index';
+default_wlu_with_given_wl = 'Unknown';
+default_wl   = 1:size(cube,3);
+default_fwhm = zeros(1, size(cube,3));
 
 %% Test NullConstructor
 assert(isempty(Cube().Data))
@@ -75,23 +84,23 @@ assert(isequal(colvec, c.Data))
 
 %% Test DefaultQuantity
 c = Cube(cube);
-assert(isequal('Unknown', c.Quantity));
+assert(isequal(default_qty, c.Quantity));
 
 c = Cube(cube, 'quantity', qty);
 assert(isequal(qty, c.Quantity));
 
 %% Test DefaultWavelengthUnit
 c = Cube(cube);
-assert(isequal('Band index', c.WavelengthUnit));
+assert(isequal(default_wlu, c.WavelengthUnit));
 
 c = Cube(cube, 'wl', wls);
-assert(isequal('Unknown', c.WavelengthUnit));
+assert(isequal(default_wlu_with_given_wl, c.WavelengthUnit));
 
 c = Cube(cube, 'fwhm', fwhms);
-assert(isequal('Band index', c.WavelengthUnit));
+assert(isequal(default_wlu, c.WavelengthUnit));
 
 c = Cube(cube, 'wl', wls, 'fwhm', fwhms);
-assert(isequal('Unknown', c.WavelengthUnit));
+assert(isequal(default_wlu_with_given_wl, c.WavelengthUnit));
 
 c = Cube(cube, 'wlunit', wlu);
 assert(isequal(wlu, c.WavelengthUnit));
@@ -107,13 +116,13 @@ assert(isequal(wlu, c.WavelengthUnit));
 
 %% Test DefaultWavelength
 c = Cube(cube);
-assert(isequal(1:size(cube,3), c.Wavelength));
+assert(isequal(default_wl, c.Wavelength));
 
 c = Cube(cube, 'wlunit', wlu);
-assert(isequal(1:size(cube,3), c.Wavelength));
+assert(isequal(default_wl, c.Wavelength));
 
 c = Cube(cube, 'fwhm', fwhms);
-assert(isequal(1:size(cube,3), c.Wavelength));
+assert(isequal(default_wl, c.Wavelength));
 
 c = Cube(cube, 'wl', wls);
 assert(isequal(wls, c.Wavelength));
@@ -129,13 +138,13 @@ assert(isequal(wls, c.Wavelength));
 
 %% Test DefaultFWHM
 c = Cube(cube);
-assert(isequal(zeros(1, size(cube,3)), c.FWHM));
+assert(isequal(default_fwhm, c.FWHM));
 
 c = Cube(cube, 'wlunit', wlu);
-assert(isequal(zeros(1, size(cube,3)), c.FWHM));
+assert(isequal(default_fwhm, c.FWHM));
 
 c = Cube(cube, 'wl', wls);
-assert(isequal(zeros(1, size(cube,3)), c.FWHM));
+assert(isequal(default_fwhm, c.FWHM));
 
 c = Cube(cube, 'fwhm', fwhms);
 assert(isequal(fwhms, c.FWHM));
@@ -148,3 +157,66 @@ assert(isequal(fwhms, c.FWHM));
 
 c = Cube(cube, 'fwhm', fwhms, 'wl', wls, 'wlunit', wlu);
 assert(isequal(fwhms, c.FWHM));
+
+%% Test CopyConstructor
+c1 = Cube(cube, 'quantity', qty, 'wlunit', wlu, 'wl', wls, 'fwhm', fwhms);
+c2 = Cube(c1);
+
+assert(isequal(c1.Data, c2.Data));
+assert(isequal(class(c1.Data), class(c2.Data)));
+assert(isequal(c1.Type, c2.Type));
+assert(isequal(c1.Quantity, c2.Quantity));
+assert(isequal(c1.WavelengthUnit, c2.WavelengthUnit));
+assert(isequal(c1.Wavelength, c2.Wavelength));
+assert(isequal(c1.FWHM, c2.FWHM));
+
+%% Test UpdateConstructor_Quantity
+c1 = Cube(cube, 'quantity', 'OldQuantity');
+c2 = Cube(c1,   'quantity', 'NewQuantity');
+
+assert(isequal(c1.Quantity, 'OldQuantity'));
+assert(isequal(c2.Quantity, 'NewQuantity'));
+
+%% Test UpdateConstructor_WavelengthUnit
+c1 = Cube(cube, 'wlunit', 'OldWavelengthUnit');
+c2 = Cube(c1,   'wlunit', 'NewWavelenghtUnit');
+
+assert(isequal(c1.WavelengthUnit, 'OldWavelengthUnit'));
+assert(isequal(c2.WavelengthUnit, 'NewWavelengthUnit'));
+
+%% Test UpdateConstructor_Wavelength
+c1 = Cube(cube, 'wl', 1:4);
+c2 = Cube(c1,   'wl', 2:5);
+assert(isequal(c1.Wavelength, 1:4));
+assert(isequal(c2.Wavelength, 2:5));
+assert(isequal(c1.WavelengthUnit, default_wlu));
+assert(isequal(c2.WavelengthUnit, default_wlu));
+
+c1 = Cube(cube, 'wl', 1:4, 'wlunit', wlu);
+c2 = Cube(c1,   'wl', 2:5);
+assert(isequal(c1.Wavelength, 1:4));
+assert(isequal(c2.Wavelength, 2:5));
+assert(isequal(c1.WavelengthUnit, wlu));
+assert(isequal(c2.WavelengthUnit, default_wlu_with_given_wl));
+
+c1 = Cube(cube, 'wl', 1:4, 'wlunit', wlu);
+c2 = Cube(c1,   'wl', 2:5, 'wlunit', wlu);
+assert(isequal(c1.Wavelength, 1:4));
+assert(isequal(c2.Wavelength, 2:5));
+assert(isequal(c1.WavelengthUnit, wlu));
+assert(isequal(c2.WavelengthUnit, wlu));
+
+%% Test UpdateConstructor_FWHM
+c1 = Cube(cube, 'fwhm', [1 1 1 1]);
+c2 = Cube(c1,   'fwhm', [2 2 2 2]);
+assert(isequal(c1.FWHM, [1 1 1 1]));
+assert(isequal(c2.FWHM, [2 2 2 2]));
+assert(isequal(c1.WavelengthUnit, default_wlu));
+assert(isequal(c2.WavelengthUnit, default_wlu));
+
+c1 = Cube(cube, 'fwhm', [1 1 1 1], 'wlunit', wlu);
+c2 = Cube(c1,   'fwhm', [2 2 2 2]);
+assert(isequal(c1.FWHM, [1 1 1 1]));
+assert(isequal(c2.FWHM, [2 2 2 2]));
+assert(isequal(c1.WavelengthUnit, wlu));
+assert(isequal(c2.WavelengthUnit, wlu));
