@@ -122,14 +122,16 @@ classdef Cube
                 cube.Data = data;
                 cube.Quantity = qty;
                 % Construct default values if none were given
-                % (CubeArgs returned an empty array)
-                if isempty(wl)
+                if ismember('wlunit', CA.UsingDefaults)
+                    wlu = 'Unknown';
+                end
+                if ismember('wl', CA.UsingDefaults)
                     wl = 1:size(data,3);
+                    if ismember('wlunit', CA.UsingDefaults)
+                        wlu = 'Band index';
+                    end
                 end
-                if isempty(wlu)
-                    wlu = 'Layer index';
-                end
-                if isempty(fwhm)
+                if ismember('fwhm', CA.UsingDefaults)
                     fwhm = zeros(1, size(data, 3));
                 end
                 cube.Wavelength = wl;
