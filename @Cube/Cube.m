@@ -74,14 +74,21 @@ classdef Cube
             hst  = CA.Results.history;
             
             if CA.isCube(data)
-                if ( ismember('quantity',CA.UsingDefaults) || ...
-                     strcmp(qty, data.Quantity) )
-                    % If no quantity was given or the quantity matches the
-                    % data, just copy
-                    cube = data;
-                else
-                    error('Given quantity %s did not match the Cube quantity %s',...
-                        qty, data.Quantity);
+                % If given an existing Cube object, copy and update any
+                % given properties.
+                cube = data;
+                if ~ismember('quantity', CA.UsingDefaults)
+                    cube.Quantity = qty;
+                end
+                if ~ismember('wl', CA.UsingDefaults)
+                    cube.Wavelength = wl;
+                    cube.WavelengthUnit = 'Unknown';
+                end
+                if ~ismember('wlunit', CA.UsingDefaults)
+                    cube.WavelengthUnit = wlu;
+                end
+                if ~ismember('fwhm', CA.UsingDefaults)
+                    cube.FWHM = fwhm;
                 end
             elseif CA.isFile(data)
                 % If we are given a file, pick a reader based on filetype
