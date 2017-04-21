@@ -127,20 +127,32 @@ classdef Cube
                 % If we are given a matrix, assign it as data and assign
                 % metadata from the given parameters
                 cube.Data = data;
-                cube.Quantity = qty;
-                % Construct default values if none were given
-                if ismember('wlunit', CA.UsingDefaults)
-                    wlu = 'Unknown';
+                if ismember('quantity', CA.UsingDefaults)
+                    warning('Cube:DefaultQuantity', 'Quantity not given, setting to %s.', qty);
                 end
+                cube.Quantity = qty;
+                
+                % Construct default values if none were given
                 if ismember('wl', CA.UsingDefaults)
+                    warning('Cube:DefaultWavelength', 'Wavelengths not given, using layer numbering.');
                     wl = 1:size(data,3);
-                    if ismember('wlunit', CA.UsingDefaults)
+                end
+                
+                if ismember('wlunit', CA.UsingDefaults)
+                    if ismember('wl', CA.UsingDefaults)
+                        warning('Cube:DefaultWavelengthUnit', 'Wavelength unit not given, setting to "Band index".');
                         wlu = 'Band index';
+                    else
+                        warning('Cube:UnknownWavelengthUnit', 'Wavelength unit not given, setting to "Unknown".');
+                        wlu = 'Unknown';
                     end
                 end
+                
                 if ismember('fwhm', CA.UsingDefaults)
+                    warning('Cube:DefaultFWHM', 'FWHM values not given, setting to zero.');
                     fwhm = zeros(1, size(data, 3));
                 end
+                
                 cube.Wavelength = wl;
                 cube.WavelengthUnit = wlu;
                 cube.FWHM = fwhm;
@@ -245,13 +257,15 @@ classdef Cube
         %        here?
         function obj = set.Wavelength(obj,value)
             assert(isequal(size(value),[1,obj.nBands]), ...
-                   'New wavelengths do not match the data!');
+                   'Cube:IncorrectWavelength', ...
+                   'Given wavelengths do not match the data!');
             obj.Wavelength = value;
         end
         
         function obj = set.FWHM(obj,value)
             assert(isequal(size(value),[1,obj.nBands]), ...
-                   'New FWHMs do not match the data!');
+                   'Cube:IncorrectFWHM', ...
+                   'Given FWHMs do not match the data!');
             obj.FWHM = value;
         end
         
