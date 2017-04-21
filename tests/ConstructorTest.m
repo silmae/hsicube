@@ -1,10 +1,5 @@
-% different-sized data matrices
-im     = magic(3);
-rowvec = [1 2 0 3];
-colvec = rowvec';
-
 % test cube with 4 bands and non-square dimensions (size [2,3,4])
-cube   = cat(3, ones(2,3), -ones(2,3), 2*ones(2,3), -2*ones(2,3));
+cube   = cat(3, ones(2,3), 2*ones(2,3), 3*ones(2,3), 4*ones(2,3));
 
 % test metadata matching the cube
 qty   = 'Quantity';
@@ -71,14 +66,19 @@ c = Cube(cube);
 assert(isequal(cube, c.Data))
 
 %% Test DataIdentity_im
+im     = [1  2  3  4;
+          5  6  7  8;
+          9 10 11 12];
 c = Cube(im);
 assert(isequal(im, c.Data))
 
 %% Test DataIdentity_rowvec
+rowvec = [1 2 3 4];
 c = Cube(rowvec);
 assert(isequal(rowvec, c.Data))
 
 %% Test DataIdentity_colvec
+colvec = [1 2 3 4]';
 c = Cube(colvec);
 assert(isequal(colvec, c.Data))
 
