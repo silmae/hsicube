@@ -25,7 +25,14 @@ classdef BandsTest < matlab.unittest.TestCase
     methods (TestClassSetup)
         function createCube(testCase, width, height, nbands)
            data = gallery('uniformdata', [height, width, nbands], 1);
+           % Suppress default value warnings for clearer test output
+           warning('off', 'Cube:DefaultQuantity');
+           warning('off', 'Cube:DefaultWavelengthUnit');
+           warning('off', 'Cube:DefaultWavelength');
+           warning('off', 'Cube:DefaultFWHM');
            testCase.testCube = Cube(data);
+           % Turn warnings back on
+           warning('on', 'all');
         end
     end
     
