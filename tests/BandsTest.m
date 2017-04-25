@@ -117,5 +117,12 @@ classdef BandsTest < matlab.unittest.TestCase
                 testCase.verifyEqual(selected.FWHM, testCase.testCube.FWHM(k));
             end
         end
+        
+        function returnIdxFormat(testCase)
+            % [~, b2] = bands(b1) should return b1 as indices even when
+            % selected using logical indexing.
+            [~, b] = testCase.testCube.bands(true(1,testCase.testCube.nBands));
+            testCase.verifyEqual(b, 1:testCase.testCube.nBands);
+        end
     end
 end
