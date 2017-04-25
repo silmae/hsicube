@@ -77,7 +77,7 @@ classdef ConstructorTest < matlab.unittest.TestCase
             testCase.assumeNotEqual(bands, bands2);
             cube = ones(height, width, bands);
             wls   = 1:bands2;
-            testCase.verifyError(@(x) Cube(cube, 'wl', wls), 'Cube:IncorrectWavelength');
+            testCase.verifyError(@() Cube(cube, 'wl', wls), 'Cube:IncorrectWavelength');
         end
         
         function testFWHMMismatch(testCase, width, height, bands, bands2)
@@ -85,37 +85,37 @@ classdef ConstructorTest < matlab.unittest.TestCase
             testCase.assumeNotEqual(bands, bands2);
             cube = ones(height, width, bands);
             fwhms   = 1:bands2;
-            testCase.verifyError(@(x) Cube(cube, 'fwhm', fwhms), 'Cube:IncorrectFWHM');
+            testCase.verifyError(@() Cube(cube, 'fwhm', fwhms), 'Cube:IncorrectFWHM');
         end
         
         function testDefaultQuantity(testCase)
-            c = testCase.verifyWarning(@(x)Cube(testCase.data), 'Cube:DefaultQuantity');
+            c = testCase.verifyWarning(@()Cube(testCase.data), 'Cube:DefaultQuantity');
             testCase.verifyEqual(c.Quantity, testCase.defaultQuantity);
         end
         
         function testDefaultWavelengthUnit(testCase)
-            c = testCase.verifyWarning(@(x)Cube(testCase.data), 'Cube:DefaultWavelengthUnit');
+            c = testCase.verifyWarning(@()Cube(testCase.data), 'Cube:DefaultWavelengthUnit');
             testCase.verifyEqual(c.WavelengthUnit, testCase.defaultWavelengthUnit);
         end
         
         function testDefaultWavelength(testCase, width, height, bands)
             % Default wavelength vector should be [1, 2, ... , bands]
             cube = ones(height, width, bands);
-            c = testCase.verifyWarning(@(x)Cube(cube), 'Cube:DefaultWavelength');
+            c = testCase.verifyWarning(@()Cube(cube), 'Cube:DefaultWavelength');
             testCase.verifyEqual(c.Wavelength, 1:bands);
         end
         
         function testUnknownWavelengthUnit(testCase)
             % If wavelengths are supplied without the unit, it is set to
             % testCase.defaultUnknownUnit with a warning
-            c = testCase.verifyWarning(@(x)Cube(testCase.data, 'wl', testCase.wl), 'Cube:UnknownWavelengthUnit');
+            c = testCase.verifyWarning(@()Cube(testCase.data, 'wl', testCase.wl), 'Cube:UnknownWavelengthUnit');
             testCase.verifyEqual(c.WavelengthUnit, testCase.defaultUnknownUnit);
         end
         
         function testDefaultFWHM(testCase, width, height, bands)
             % Default FWHM vector should be zeros(1, bands)
             cube = ones(height, width, bands);
-            c = testCase.verifyWarning(@(x)Cube(cube), 'Cube:DefaultFWHM');
+            c = testCase.verifyWarning(@()Cube(cube), 'Cube:DefaultFWHM');
             testCase.verifyEqual(c.FWHM, zeros(1,bands));
         end
         
