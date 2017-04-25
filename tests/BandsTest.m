@@ -59,7 +59,7 @@ classdef BandsTest < matlab.unittest.TestCase
         end
         
         function invalidIdxError(testCase)
-            % Invalid single values
+            % Invalid single values should error
             testCase.verifyError(@()testCase.testCube.bands(1.5), 'Cube:InvalidBandIdx');
             testCase.verifyError(@()testCase.testCube.bands(1 + 1i), 'Cube:InvalidBandIdx');
             testCase.verifyError(@()testCase.testCube.bands(nan), 'Cube:InvalidBandIdx');
@@ -67,6 +67,7 @@ classdef BandsTest < matlab.unittest.TestCase
         end
         
         function invalidIdxVectorError(testCase)
+            % Vectors containing invalid values should error
             testCase.verifyError(@()testCase.testCube.bands([1, 1.5]), 'Cube:InvalidBandIdx');
             testCase.verifyError(@()testCase.testCube.bands([1, 1 + 1i]), 'Cube:InvalidBandIdx');
             
@@ -75,9 +76,21 @@ classdef BandsTest < matlab.unittest.TestCase
         end
         
         function invalidIdxShapeError(testCase)
-            % non-vector matrices are invalid
-            testCase.verifyError(@()testCase.testCube.bands(ones(2)), 'Cube:InvalidBandIdx');
-            testCase.verifyError(@()testCase.testCube.bands(eye(2)), 'Cube:InvalidBandIdx');
+            % non-vector matrices are invalid whether or not they contain 
+            % valid indices
+            testCase.verifyError(@()testCase.testCube.bands(zeros(2)), 'Cube:InvalidIdxShape');
+            testCase.verifyError(@()testCase.testCube.bands(ones(2)), 'Cube:InvalidIdxShape');
+            idx = 1:testCase.testCube.nBands;
+            testCase.verifyError(@()testCase.testCube.bands([idx; idx]), 'Cube:InvalidIdxShape');
+            testCase.verifyError(@()testCase.testCube.bands([idx; idx]'), 'Cube:InvalidIdxShape');
+        end
+        
+        function invalidLogicalIdxError(testCase)
+            % logical vectors of incorrect length should error
+            testCase.verifyError(@()testCase.testCube.bands(true(1, testCase.testCube.nBands+1)), 'Cube:InvalidLogicalIdx');
+            testCase.verifyError(@()testCase.testCube.bands(true(1, testCase.testCube.nBands-1)), 'Cube:InvalidLogicalIdx');
+            testCase.verifyError(@()testCase.testCube.bands(false(1, testCase.testCube.nBands+1)), 'Cube:InvalidLogicalIdx');
+            testCase.verifyError(@()testCase.testCube.bands(false(1, testCase.testCube.nBands-1)), 'Cube:InvalidLogicalIdx');
         end
         
         function bandsIdentity(testCase)
