@@ -361,17 +361,8 @@ classdef Cube
             obj.History = {{'Cropped spatially',@crop,tl,br}};
         end
         
-        function obj = bands(obj,b)
-            %BANDS Bandwise crop
-            % bands(b) returns a cube with only the given bands 
-            %          b must be a vector of indices in Bands or a logical
-            %          array.
-            % TODO: Validate input
-            obj.Data       = obj.Data(:,:,b);
-            obj.Wavelength = obj.Wavelength(b);
-            obj.FWHM       = obj.FWHM(b);
-            obj.History    = {{'Select bands retained',@bands,b}};
-        end
+        % Band selection. See bands.m
+        [obj, b] = bands(obj,b)
         
         function obj = mask(obj,maskim)
             %MASK Select spatial points using a mask image
