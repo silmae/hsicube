@@ -84,12 +84,11 @@ classdef BandsTest < matlab.unittest.TestCase
         
         function invalidIdxShapeError(testCase)
             % non-vector matrices are invalid whether or not they contain 
-            % valid indices
+            % valid indices or logical values
             testCase.verifyError(@()testCase.testCube.bands(zeros(2)), 'Cube:InvalidIdxShape');
             testCase.verifyError(@()testCase.testCube.bands(ones(2)), 'Cube:InvalidIdxShape');
-            idx = 1:testCase.testCube.nBands;
-            testCase.verifyError(@()testCase.testCube.bands([idx; idx]), 'Cube:InvalidIdxShape');
-            testCase.verifyError(@()testCase.testCube.bands([idx; idx]'), 'Cube:InvalidIdxShape');
+            testCase.verifyError(@()testCase.testCube.bands(true(2)), 'Cube:InvalidIdxShape');
+            testCase.verifyError(@()testCase.testCube.bands(false(2)), 'Cube:InvalidIdxShape');
         end
         
         function invalidLogicalIdxError(testCase)
