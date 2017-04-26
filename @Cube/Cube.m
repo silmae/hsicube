@@ -364,29 +364,9 @@ classdef Cube
         % Band selection. See bands.m
         [obj, b] = bands(obj,b)
         
-        function obj = mask(obj,maskim)
-            %MASK Select spatial points using a mask image
-            % mask(maskim) returns a Cube containing the pixels determined
-            % by the logical matrix maskim in columnwise order. 
-            % The matrix maskim must have the same spatial dimensions as the
-            % Cube.
-            
-            assert(islogical(maskim), 'The mask must be a logical matrix.');
-            assert(isequal(size(maskim), [obj.Height,obj.Width]),...
-                'The mask must have the same dimensions as the Cube (%d), was %d',...
-                [obj.Height, obj.Width],size(maskim));
-            
-            % Count the number of spatial pixels after masking
-            N = sum(maskim(:));
-            
-            % Replicate the mask bandwise for easy indexing
-            cubeMask = repmat(maskim,1,1,obj.nBands);
-            
-            % Index the data using the mask and reshape into columnwise
-            % gathered spectral vectors.
-            obj.Data    = reshape(obj.Data(cubeMask),N,1,obj.nBands);
-            obj.History = {{'Spatial mask applied',@mask, maskim}};
-        end
+        % Spatial masking. See mask.m
+        [obj, maskim] = mask(obj,maskim)
+        
         
         function obj = unmask(obj,maskim)
             %UNMASK Spatially reshape columnwise ordered spectra
