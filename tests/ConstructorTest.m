@@ -9,8 +9,8 @@ classdef ConstructorTest < matlab.unittest.TestCase
         defaultUnknownUnit    = 'Unknown';
         
         % constant test data cube and corresponding metadata
-        data = ones(2,3,4,'double');
-        wl   = [1 3 5 7];
+        data = gallery('uniformdata', [2,3,4], 1);
+        wl   = gallery('uniformdata', [1,4], 1);
     end
     
     properties (TestParameter)
