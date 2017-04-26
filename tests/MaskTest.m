@@ -73,10 +73,18 @@ classdef MaskTest < matlab.unittest.TestCase
             testCase.verifyError(@()testCase.testCube.mask(im), 'Cube:InvalidMaskShape');
         end
         
-        function maskArea(testCase)
+        function maskedArea(testCase)
             % Sum of the true pixels in the mask should match the new area
             masked = testCase.testCube.mask(testCase.testMask);
             testCase.verifyEqual(masked.Area, sum(testCase.testMask(:)));
+        end
+        
+        function maskedShape(testCase)
+            % Masking should return a single column of pixels with height
+            % equal to area
+            masked = testCase.testCube.mask(testCase.testMask);
+            testCase.verifyEqual(masked.Width, 1);
+            testCase.verifyEqual(masked.Height, masked.Area);
         end
         
         function unMaskGeneralizedInverse(testCase)
