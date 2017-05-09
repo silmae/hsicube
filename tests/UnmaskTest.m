@@ -63,6 +63,7 @@ classdef UnmaskTest < matlab.unittest.TestCase
         function unmaskAreaTooSmall(testCase)
             % An error should be thrown if sum(mask) is less than the area
             % of the cube
+            testCase.assumeGreaterThan(testCase.testCube.Area,0);
             
             invalidMask = [true(1, testCase.testCube.Area - 1), false];
             testCase.verifyError(@()testCase.testCube.unmask(invalidMask),'Cube:InvalidMaskArea');
