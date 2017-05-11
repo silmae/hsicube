@@ -64,5 +64,14 @@ classdef ByColsTest < matlab.unittest.TestCase
            twice = testCase.testCube.byCols.byCols.Data;
            testCase.verifyEqual(twice, once);
         end
+        
+        function byColsUnColsInverse(testCase)
+            % unCols should be an inverse of byCols
+            orig = testCase.testCube.Data;
+            w = testCase.testCube.Width;
+            h = testCase.testCube.Height;
+            new  = testCase.testCube.byCols.unCols(w, h).Data;
+            testCase.verifyEqual(new, orig);
+        end
     end
 end
