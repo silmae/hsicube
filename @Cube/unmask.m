@@ -8,6 +8,8 @@ function [obj, maskim] = unmask(obj,maskim)
 % The matrix maskim must be a logical matrix with the amount of
 % true elements equal to the number of pixels in the Cube.
 
+
+assert(obj.Width == 1, 'Cube:NotUnmaskable', 'Cube shape is not tabular (N rows, 1 column, B bands), unmasking is not allowed.');
 assert(islogical(maskim), 'Cube:InvalidMaskType', 'The mask must be a logical matrix.');
 % scalars are accepted for the edge case of a single pixel
 assert(ismatrix(maskim) || isscalar(maskim), 'Cube:InvalidMaskShape', 'The mask must be a logical matrix.');
