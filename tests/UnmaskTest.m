@@ -45,6 +45,23 @@ classdef UnmaskTest < matlab.unittest.TestCase
     
     methods (Test)
         
+        function notUnmaskableError(testCase)
+            % Only tabular (width 1) data can be unmasked, others
+            % should result in an error even if the amount of data matches
+            % the mask
+            im = testCase.testMask;
+            N = sum(im(:));
+            testCase.assumeGreaterThan(1, N);
+            % row instead of column
+            warning('off', 'Cube:DefaultQuantity');
+            warning('off', 'Cube:DefaultWavelengthUnit');
+            warning('off', 'Cube:DefaultWavelength');
+            warning('off', 'Cube:DefaultFWHM');
+            row = Cube(ones(1,N));
+            warning('on', 'all');
+            testCase.verifyError(@()row.unmask(im), 'Cube:NotUnmaskable');
+        end
+        
         function maskTypeError(testCase)
             % mask images should be logical matrices
             im = ones(testCase.testCube.Height, testCase.testCube.Width);
