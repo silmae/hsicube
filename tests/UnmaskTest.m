@@ -22,7 +22,7 @@ classdef UnmaskTest < matlab.unittest.TestCase
                         'hyper',  100  ...
                         );
         
-        maskseed = {1, 2, 3, 4, 5};
+        maskseed = {1, 2, 3, 4, 5, 6, 7};
     end
     
     methods (TestClassSetup)
@@ -51,7 +51,7 @@ classdef UnmaskTest < matlab.unittest.TestCase
             % the mask
             im = testCase.testMask;
             N = sum(im(:));
-            testCase.assumeGreaterThan(1, N);
+            testCase.assumeNotEqual(N, 1);
             % row instead of column
             warning('off', 'Cube:DefaultQuantity');
             warning('off', 'Cube:DefaultWavelengthUnit');
