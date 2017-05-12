@@ -630,6 +630,12 @@ classdef Cube
             obj.History = {{'Reduced to spatially columnwise means',@colMean}};
         end
         
+        function obj = rowMean(obj)
+            %ROWMEAN Returns the spatial mean spectra for each row.
+            obj.Data    = mean(obj.Data,2);
+            obj.History = {{'Reduced to spatially rowwise means',@rowMean}};
+        end
+        
         function obj = median(obj)
             %MEDIAN Returns the spatial median spectra.
             obj.Data    = median(obj.byCols.Data,1);
