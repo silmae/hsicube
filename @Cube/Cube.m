@@ -196,7 +196,7 @@ classdef Cube
                 end
                 
                 % At this point, wr should be a valid Cube
-                cube = cube.toReflectance(wr);
+                cube = cube.divideBy(wr);
             end
         end
         end
@@ -428,41 +428,30 @@ classdef Cube
         
         %% Operations %%
 
-        function obj = toReflectance(obj,wr)
-            %TOREFLECTANCE Calculate reflectance from radiance 
-            % toReflectance(wr) divides the data values by the values in
-            % the given white reference. Both need to be Cube objects
-            % containing radiance data.
-            % If wr has fewer lines (smaller height than the data), use the
-            % column averages of each band for the calculation (similar to
-            % g_refl.m)
+        function [obj,d] = divideBy(obj,d,qty)
+            %DIVIDEBY Divide the data elementwise by the given data
+            % divideBy(d) divides the data in the cube by the values in
+            % the given cube or data matrix d. The result quantity will be
+            % set as "qty_cube / qty_d", or "qty_cube / unknown" if a
+            % matrix was supplied 
+            % divideBy(wr,qty) will do the same, but set the result
+            % quantity to the given qty.
             %
-            % TODO: Reduce code duplication with calibrate()
-            % TODO: Implement a mechanism to check whether Cubes are
-            %       calibrated using the same black reference.
+            % The dividing data must have the same number of bands as teh 
                  
             % Sanity checks
-            assert(strcmp(obj.Quantity, 'Radiance'), 'Data has to be calibrated radiance data to be converted, was %s', obj.Quantity);
-            assert(strcmp(wr.Quantity, 'Radiance'), 'White reference has to be calibrated radiance data, was %s', wr.Quantity);
-            assert(obj.Width == wr.Width, 'White reference has width %d, expected %d)', wr.Width, obj.Width);
-            assert(obj.nBands == wr.nBands, 'White reference has %d bands, expected %d', wr.nBands, obj.nBands);
+            assert(obj.nBands == d.nBands, 'Divisor has %d bands, expected %d', d.nBands, obj.nBands);
             
-            if wr.Height == obj.Height
-                % For matching sizes, just calculate
-                obj.Data = double(obj.Data) ./ double(wr.Data);
-            else
-                % For differing heights, calibrate using the column means
-                % (for single-line camera references)
-                wr = wr.colMean;
-                
-                % TODO: Should line replication be a Cube method (that
-                % leaves behind history?)
-                obj.Data = double(obj.Data) ./ repmat(double(wr.Data), obj.Height, 1);
+            % Use automatic expansion to calculate different dimensions
+            % Always operate on doubles
+            obj.Data = bsxfun(@rdivide, double(obj.Data), double(d.Data));
+            
+            if nargin < 3
+                qty = [obj.Quantity, ' / ' , d.Quantity];
             end
-            
-            obj.Quantity = 'Reflectance';
-            obj.Files    = wr.Files(:);
-            obj.History  = {{'Calculated reflectance using white reference', @toReflectance, wr.History}};
+            obj.Quantity = qty;
+            obj.Files    = d.Files(:);
+            obj.History  = {{'Calculated reflectance using white reference', @divideBy, d.History}};
         end
         
         function obj = calibrate(obj, br)
@@ -473,7 +462,7 @@ classdef Cube
             % If br has fewer lines (smaller height than the data), use the
             % column averages of each band for calibration (similar to
             % g_refl.m)
-            % TODO: Reduce code duplication with toReflectance()
+            % TODO: Reduce code duplication with divideBy()
             
             % Disallow re-calibration
             assert(strcmp(obj.Quantity, 'Raw'), 'Data must be uncalibrated values, was %s', obj.Quantity);
