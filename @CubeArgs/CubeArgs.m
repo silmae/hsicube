@@ -27,6 +27,10 @@ classdef CubeArgs < inputParser
             qtyValid = @(x)assert(CA.isValidQuantity(x),...
                 'Quantity must be a non-empty char array');
             CA.addParameter('quantity', 'Unknown', qtyValid);
+           
+            fileValid = @(x)assert(CA.isFile(x),...
+                'Filename must be a valid path to an existing file');
+            CA.addParameter('file', '', fileValid);
             
             ftValid = @(x)assert(CA.isFileType(x),...
                 'File type must be one of\n %s',strjoin(CA.FILETYPES,'\n '));

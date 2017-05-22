@@ -66,6 +66,7 @@ classdef Cube
             data = CA.Results.data;
             qty  = CA.Results.quantity;
             ft   = CA.Results.filetype;
+            file = CA.Results.file;
             br   = CA.Results.br;
             wr   = CA.Results.wr;
             wl   = CA.Results.wl;
@@ -157,6 +158,7 @@ classdef Cube
                 cube.WavelengthUnit = wlu;
                 cube.FWHM = fwhm;
 
+                cube.Files = file;
                 cube.History = hst;
                 % Append the given history with a note and the given
                 % parameters.
