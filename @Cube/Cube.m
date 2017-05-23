@@ -388,53 +388,6 @@ classdef Cube
             obj.History  = {{'Calculated reflectance using white reference', @divideBy, d.History}};
         end
         
-        function obj = calibrate(obj, br)
-            %CALIBRATE Calibrates the data by substracting dark current
-            % calibrate(br) substracts the given black reference from the
-            % data. br must be a Cube object containing raw data.
-            % The width and band number of the reference must match the data.
-            % If br has fewer lines (smaller height than the data), use the
-            % column averages of each band for calibration (similar to
-            % g_refl.m)
-            % TODO: Reduce code duplication with divideBy()
-            
-            % Disallow re-calibration
-            assert(strcmp(obj.Quantity, 'Raw'), 'Data must be uncalibrated values, was %s', obj.Quantity);
-            
-            % Some sanity checks
-            % TODO: Should we check that the wavelengths match
-            %       (difficult with float values)?
-            assert(strcmp(br.Quantity, 'Raw'), 'Black reference should contain raw data, was %s', br.Quantity);
-            assert(br.Width == obj.Width, 'Black reference has width %d, expected %d', br.Width, obj.Width);
-            assert(br.nBands == obj.nBands, 'Black reference has %d bands, expected %d', br.nBands, obj.nBands);
-            
-            % FIXME: History should probably contain a mention of the type
-            % change?
-            if br.Height == obj.Height
-                % For matching sizes, just calculate
-                obj.Data = double(obj.Data) - double(br.Data);
-            else
-                % For differing heights, calibrate using the column means
-                % (for single-line camera references)
-                br = br.colMean;
-                
-                % TODO: Should line replication be a Cube method (that
-                % leaves behind history?)
-                obj.Data = double(obj.Data) - repmat(double(br.Data), obj.Height, 1);
-            end
-            
-            % TODO: Can this be something else than radiance?
-            obj.Quantity = 'Radiance';
-            
-            % Add the files used for forming br explicitly
-            obj.Files    = br.Files(:);
-            
-            % Only include the history of the reference file in the
-            % metadata instead of the actual parameter.
-            % TODO: Is this practical / good enough for reproducability?
-            obj.History  = {{'Calibrated to radiance using black reference',@calibrate, br.History}};
-        end
-        
         function obj = map(obj,f,history,qty,wlunit,wls,fwhm)
             %MAP Applies the given function on the cube data
             % map(f,history,qty,wlunit,wls,fwhm) applies the function f on 
