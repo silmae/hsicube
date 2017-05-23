@@ -2,7 +2,6 @@ classdef CubeArgs < inputParser
 % inputParser subclass for Cube argument parsing
 
     properties (Constant)
-        FILETYPES     = {'envi', 'image', 'raw'}
         CUBECLASSNAME = 'Cube'
     end
 
@@ -19,7 +18,7 @@ classdef CubeArgs < inputParser
             %% Required arguments
             
             dataValid = @(x)assert(CA.isDataSource(x),...
-                'Data source must be a valid filename or Cube object');
+                'Data source must be a data array or a Cube object');
             CA.addRequired('data', dataValid);
             
             %% Optional name-value parameters
@@ -31,18 +30,6 @@ classdef CubeArgs < inputParser
             fileValid = @(x)assert(CA.isFile(x),...
                 'Filename must be a valid path to an existing file');
             CA.addParameter('file', '', fileValid);
-            
-            ftValid = @(x)assert(CA.isFileType(x),...
-                'File type must be one of\n %s',strjoin(CA.FILETYPES,'\n '));
-            CA.addParameter('filetype', CA.FILETYPES{1}, ftValid);
-            
-            wrValid = @(x)assert(CA.isDataSource(x),...
-                'White reference must be a valid filename or Cube object');
-            CA.addParameter('wr', '', wrValid);
-            
-            brValid = @(x)assert(CA.isDataSource(x),...
-                'Black reference must be a valid filename or Cube object');
-            CA.addParameter('br', '', brValid);
             
             WLValid = @(x)assert(CA.isValidWL(x),...
                 'Wavelength specification must be a numeric vector');
@@ -67,10 +54,6 @@ classdef CubeArgs < inputParser
         %% Validation functions
         % Return a logical value
         
-        function bool = isFileType(x)
-            bool = ismember(x,CubeArgs.FILETYPES);
-        end
-        
         function bool = isFile(x)
             bool = ischar(x) && ( exist(x,'file') == 2 );
         end
@@ -80,7 +63,7 @@ classdef CubeArgs < inputParser
         end
         
         function bool = isDataSource(x)
-            bool = CubeArgs.isCube(x) || CubeArgs.isFile(x) || isnumeric(x);
+            bool = CubeArgs.isCube(x) || isnumeric(x);
         end
         
         function bool = isValidQuantity(x)

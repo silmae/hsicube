@@ -65,10 +65,7 @@ classdef Cube
             
             data = CA.Results.data;
             qty  = CA.Results.quantity;
-            ft   = CA.Results.filetype;
             file = CA.Results.file;
-            br   = CA.Results.br;
-            wr   = CA.Results.wr;
             wl   = CA.Results.wl;
             wlu  = CA.Results.wlunit;
             fwhm = CA.Results.fwhm;
@@ -90,39 +87,6 @@ classdef Cube
                 end
                 if ~ismember('fwhm', CA.UsingDefaults)
                     cube.FWHM = fwhm;
-                end
-            elseif CA.isFile(data)
-                % If we are given a file, pick a reader based on filetype
-                switch lower(ft)
-                    case 'envi'
-                        % Try to find a corresponding ENVI header and read the
-                        % data
-                        hdrfile = findhdr(data);
-                        
-                        fprintf('Reading ENVI data from %s\n', data);
-                        [cube.Data, info] = enviread(data, hdrfile);
-                        fprintf('ENVI data read.\n');
-                        
-                        % Assign the relevant metadata to the object
-                        cube.Files    = data;
-                        cube.Quantity = qty;
-                        cube.History  = {{'Data read from ENVI file',@Cube,data,qty}};
-                        cube          = cube.parseENVI(info);
-                    case 'image'
-                        % Assume the filename is an image file
-                        % and attempt to read it using imread.
-                        [cube.Data, ~, ~] = imread(data);
-                        
-                        % Fill the metadata using the given parameters.
-                        % We don't attempt to read geotiff data etc. for now.
-                        cube.Files           = data;
-                        cube.Quantity        = qty;
-                        cube.Wavelength      = wl;
-                        cube.WavelengthUnit  = wlu;
-                        cube.FWHM            = fwhm;
-                        cube.History  = {{'Data read from image file', @Cube, CA.Results}};
-                    otherwise
-                        error('File type %s cannot currently be read',ft);
                 end
             elseif isnumeric(data)
                 % If we are given a matrix, assign it as data and assign
@@ -167,38 +131,6 @@ classdef Cube
                 cube.History = {{'Cube constructed from matrix data',@Cube,CA.Results}};
             else
                 error('Unknown data supplied, parameters were\n%s',evalc('CA.Results'));
-            end
-            
-            % If a black reference was given, try to calibrate
-            if ~isempty(br)
-                % If given a filename, attempt to read it as raw data.
-                if CA.isFile(br)
-                    br = Cube(br, 'Raw');
-                end
-                
-                % at this point, br should be a valid Cube
-                cube = cube.calibrate(br);
-            end
-            
-            % If a white reference was given, attempt to calculate
-            % reflectance from the data
-            if ~isempty(wr)
-                
-                % If a filename was given, we try to read it
-                if CA.isFile(wr)
-                    % If a black reference was also given, assume the white
-                    % reference to be raw data in need of calibration.
-                    % Otherwise, it should be Radiance and we don't need to
-                    % recalibrate
-                    if ~isempty(br)
-                        wr = Cube(wr, 'Raw', 'br', br);
-                    else 
-                        wr = Cube(wr, 'Radiance');
-                    end
-                end
-                
-                % At this point, wr should be a valid Cube
-                cube = cube.divideBy(wr);
             end
         end
         end
