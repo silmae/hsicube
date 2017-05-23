@@ -515,8 +515,6 @@ classdef Cube
     %% Private methods %%
     
     methods (Access = 'private')
-        % See parseENVI.m
-        obj = parseENVI(obj, S)
         
         function bool = inIm(obj,x,y)
             %INIM Check whether a pixel coordinate is valid.
