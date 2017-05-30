@@ -8,6 +8,7 @@ function hdrfile = findhdr(filename)
 hdrfile = fullfile(fpath, [fname, '.hdr']);
 
 % Check the existence of the file
-assert(exist(hdrfile,'file')==2,'ENVI header file %s does not exist',hdrfile);
+assert(exist(hdrfile,'file')==2,...
+    'ENVI:HeaderNotFound', 'ENVI header file %s does not exist', hdrfile);
 
 end
