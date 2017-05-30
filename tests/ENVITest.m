@@ -52,8 +52,8 @@ classdef ENVITest < matlab.unittest.TestCase
         end
         
         function writeReadMetaIdentity(testCase)
-            % Writing a Cube to ENVI should preserve the metadata up to
-            % single precision
+            % Writing a Cube to ENVI should preserve the metadata, at least 
+            % up to single precision
             orig = testCase.testCube;
             tmpfile = tempname;
             
@@ -62,11 +62,12 @@ classdef ENVITest < matlab.unittest.TestCase
             delete([tmpfile, '.dat']);
             delete([tmpfile, '.hdr']);
             
-            testCase.verifyEqual(single(new.Wavelength), single(orig.Wavelength));
-            testCase.verifyEqual(single(new.FWHM), single(orig.FWHM));
+            testCase.verifyEqual(single(new.Wavelength), single(orig.Wavelength), 'Wavelengths changed');
+            testCase.verifyEqual(single(new.FWHM), single(orig.FWHM), 'FWHMs changed');
         end
         
         function findhdrFileNotFound(testCase)
+            % findhdr should throw an error if the file does not exist
             tmpfile = [tempname, '.hdr'];
             testCase.assumeEqual(exist(tmpfile, 'file'),0);
             testCase.verifyError(@()ENVI.findhdr(tmpfile),'ENVI:HeaderNotFound');
