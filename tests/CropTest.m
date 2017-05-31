@@ -56,7 +56,7 @@ classdef CropTest < matlab.unittest.TestCase
         
         function invalidCorner(testCase)
             % crop should error if the first corner is not to the top left
-            % of the second corner
+            % of the second corner (or equal)
             c = testCase.testCube;
             
             % Not testable on single-pixel data
@@ -66,6 +66,32 @@ classdef CropTest < matlab.unittest.TestCase
             testCase.verifyError(@()c.crop([2 1], [1 1]), 'Cube:InvalidCorner');
             testCase.verifyError(@()c.crop([1 2], [1 1]), 'Cube:InvalidCorner');
             testCase.verifyError(@()c.crop([2 2], [1 1]), 'Cube:InvalidCorner');
+        end
+        
+        function croppedWidth(testCase)
+            % Width of the cropped image should match the distance of the 
+            % corner x-coordinates + 1 (inclusive)
+            c = testCase.testCube;
+            
+            testCase.assumeGreaterThan(c.Width, 1);
+            
+            w = c.Width;
+            h = c.Height;
+            testCase.verifyEqual(c.crop([1, 1], [w-1, h]).Width, w-1);
+            testCase.verifyEqual(c.crop([2, 1], [w, h]).Width, w-1);
+        end
+        
+        function croppedHeight(testCase)
+            % Width of the cropped image should match the distance of the 
+            % corner x-coordinates + 1 (inclusive)
+            c = testCase.testCube;
+            
+            testCase.assumeGreaterThan(c.Height, 1);
+            
+            w = c.Width;
+            h = c.Height;
+            testCase.verifyEqual(c.crop([1, 1], [w, h-1]).Height, h-1);
+            testCase.verifyEqual(c.crop([1, 2], [w, h]).Height, h-1);
         end
     end
 end
