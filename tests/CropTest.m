@@ -1,7 +1,7 @@
 classdef CropTest < matlab.unittest.TestCase
     
     properties
-       testCube 
+       testCube
     end
     
     properties (ClassSetupParameter)
@@ -37,5 +37,35 @@ classdef CropTest < matlab.unittest.TestCase
     end
     
     methods (Test)
+        function cornerOutOfBounds(testCase)
+            % crop should error if given corner is not valid
+            c = testCase.testCube;
+            
+            % 1 is the smallest valid coordinate
+            testCase.verifyError(@()c.crop([0 1], [1 1]), 'Cube:CornerOutOfBounds');
+            testCase.verifyError(@()c.crop([1 0], [1 1]), 'Cube:CornerOutOfBounds');
+            testCase.verifyError(@()c.crop([1 1], [0 1]), 'Cube:CornerOutOfBounds');
+            testCase.verifyError(@()c.crop([1 1], [1 0]), 'Cube:CornerOutOfBounds');
+            
+            % The Cube width and height are the maximum valid coords
+            testCase.verifyError(@()c.crop([c.Width+1, 1], [1 1]), 'Cube:CornerOutOfBounds');
+            testCase.verifyError(@()c.crop([1, 1], [c.Width+1 1]), 'Cube:CornerOutOfBounds');
+            testCase.verifyError(@()c.crop([1, c.Height+1], [1 1]), 'Cube:CornerOutOfBounds');
+            testCase.verifyError(@()c.crop([1, 1], [1 c.Height+1]), 'Cube:CornerOutOfBounds');
+        end
+        
+        function invalidCorner(testCase)
+            % crop should error if the first corner is not to the top left
+            % of the second corner
+            c = testCase.testCube;
+            
+            % Not testable on single-pixel data
+            testCase.assumeGreaterThan(c.Width, 1);
+            testCase.assumeGreaterThan(c.Height, 1);
+            
+            testCase.verifyError(@()c.crop([2 1], [1 1]), 'Cube:InvalidCorner');
+            testCase.verifyError(@()c.crop([1 2], [1 1]), 'Cube:InvalidCorner');
+            testCase.verifyError(@()c.crop([2 2], [1 1]), 'Cube:InvalidCorner');
+        end
     end
 end
