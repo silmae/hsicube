@@ -37,15 +37,36 @@ classdef CropTest < matlab.unittest.TestCase
     end
     
     methods (Test)
+        
+        function cxSize(testCase)
+            % Both corner coordinates must be 1 x 2 matrices, else error
+            c = testCase.testCube;
+            
+            testCase.verifyError(@()c.crop(1,[1,1]), 'Cube:InvalidCoordinateSize');
+            testCase.verifyError(@()c.crop([1,1],1), 'Cube:InvalidCoordinateSize');
+            testCase.verifyError(@()c.crop([1,1,1],[1,1]), 'Cube:InvalidCoordinateSize');
+            testCase.verifyError(@()c.crop([1,1],[1,1,1]), 'Cube:InvalidCoordinateSize');
+        end
+        
+        function unnaturalCx(testCase)
+        	% Coordinates must be integers greater than zero
+            c = testCase.testCube;
+            
+            testCase.verifyError(@()c.crop([0 1], [1 1]), 'Cube:UnnaturalCoordinates');
+            testCase.verifyError(@()c.crop([1 0], [1 1]), 'Cube:UnnaturalCoordinates');
+            testCase.verifyError(@()c.crop([1 1], [0 1]), 'Cube:UnnaturalCoordinates');
+            testCase.verifyError(@()c.crop([1 1], [1 0]), 'Cube:UnnaturalCoordinates');
+            
+            testCase.verifyError(@()c.crop([1.5 1], [1 1]), 'Cube:UnnaturalCoordinates');
+            testCase.verifyError(@()c.crop([1 1.5], [1 1]), 'Cube:UnnaturalCoordinates');
+            testCase.verifyError(@()c.crop([1 1], [1.5 1]), 'Cube:UnnaturalCoordinates');
+            testCase.verifyError(@()c.crop([1 1], [1 1.5]), 'Cube:UnnaturalCoordinates');
+        end
+        
+        
         function cornerOutOfBounds(testCase)
             % crop should error if given corner is not valid
             c = testCase.testCube;
-            
-            % 1 is the smallest valid coordinate
-            testCase.verifyError(@()c.crop([0 1], [1 1]), 'Cube:CornerOutOfBounds');
-            testCase.verifyError(@()c.crop([1 0], [1 1]), 'Cube:CornerOutOfBounds');
-            testCase.verifyError(@()c.crop([1 1], [0 1]), 'Cube:CornerOutOfBounds');
-            testCase.verifyError(@()c.crop([1 1], [1 0]), 'Cube:CornerOutOfBounds');
             
             % The Cube width and height are the maximum valid coords
             testCase.verifyError(@()c.crop([c.Width+1, 1], [1 1]), 'Cube:CornerOutOfBounds');
@@ -63,9 +84,9 @@ classdef CropTest < matlab.unittest.TestCase
             testCase.assumeGreaterThan(c.Width, 1);
             testCase.assumeGreaterThan(c.Height, 1);
             
-            testCase.verifyError(@()c.crop([2 1], [1 1]), 'Cube:InvalidCorner');
-            testCase.verifyError(@()c.crop([1 2], [1 1]), 'Cube:InvalidCorner');
-            testCase.verifyError(@()c.crop([2 2], [1 1]), 'Cube:InvalidCorner');
+            testCase.verifyError(@()c.crop([2 1], [1 1]), 'Cube:InvalidCornerOrder');
+            testCase.verifyError(@()c.crop([1 2], [1 1]), 'Cube:InvalidCornerOrder');
+            testCase.verifyError(@()c.crop([2 2], [1 1]), 'Cube:InvalidCornerOrder');
         end
         
         function croppedWidth(testCase)
