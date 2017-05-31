@@ -509,6 +509,30 @@ classdef Cube
             enviwrite(obj.Data, info, datafile, hdrfile);
         end
 
+        %% 
+        
+        function bool = inBounds(obj,cx)
+            %INBOUNDS Check whether the given indices are within bounds
+            % INBOUNDS([x,y,b]) returns true only if
+            %  0 < x <= width,
+            %  0 < y <= height, and
+            %  0 < b <= bands 
+            % of the data cube for all values in x, y, b. All values in cx
+            % must be integer values, else we return false.
+            % INBOUNDS([x, y]) does the same without the bands check.
+            
+            assert(all(isnatural(cx(:))), 'Cube:UnnaturalCoordinates', ...
+                'Coordinate values must be natural numbers');
+            
+            % isnatural checks > 0, we only need to check max bound
+            if size(cx,2) > 1
+                bool = all(cx(:,1)<= obj.Width) ...
+                    && all(cx(:,2)<= obj.Height);
+            end
+            if size(cx,2) > 2
+                bool = bool && all(cx(:,3) <= obj.nBands);
+            end
+        end
     end
         
     
@@ -516,20 +540,6 @@ classdef Cube
     
     methods (Access = 'private')
         
-        function bool = inIm(obj,x,y)
-            %INIM Check whether a pixel coordinate is valid.
-            % Valid coordinates are integers between 1 and width/height of 
-            % the image plane.
-            % Requires ../Utils/isnatural.m and ../Utils/inRect.m
-            
-            % Check if we are given integers and their sizes match
-            if ~isequal(size(x),size(y)) || ~isnatural(x) || ~isnatural(y)
-                bool = false;
-            else
-                maxP = obj.Size([1,2]);
-                bool = all(inRect([y, x],[1,1],maxP));
-            end
-        end
         
         function filename = generateFileName(obj,name)
             %GENERATEFILENAME Generate a filename based on Cube history
