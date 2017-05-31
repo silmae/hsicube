@@ -283,17 +283,8 @@ classdef Cube
             
         %% Slicing %%
     
-        function obj = crop(obj,tl,br)
-            %CROP Spatial crop
-            % crop([tlx, tly],[brx, bry]) crops the cube spatially to a 
-            %     rectangle defined by top left corner [tlx, tly] and
-            %     bottom right corner [brx, bty].
-            %             
-            % TODO: Validate input more thoroughly
-            assert(obj.inIm(tl(1),tl(2)) && obj.inIm(br(1),br(2)),'Corners must be integer coordinates inside the image plane.');
-            obj.Data = obj.Data(tl(2):br(2),tl(1):br(1),:);
-            obj.History = {{'Cropped spatially',@crop,tl,br}};
-        end
+        % Spatial crop. See crop.m
+        [obj, tl, br] = crop(obj,tl,br)
         
         % Band selection. See bands.m
         [obj, b] = bands(obj,b)
