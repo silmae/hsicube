@@ -295,29 +295,8 @@ classdef Cube
         % Unmasking back to a cube. See unmask.m
         [obj, maskim] = unmask(obj,maskim)
         
-        function obj = px(obj,x,y)
-            %PX Select pixels from the cube
-            % Usage: px(x,y)
-            %        px([x,y]) 
-            % with x, y column vectors of pixel coordinates.
-            % Returns the cube containing the points (x,y) in the original
-            % cube. Note that this is the opposite order to MATLAB default
-            % indexing.
-            if nargin < 3
-                assert(size(x,2)==2,'Expected coordinate matrix [x,y].');
-                y = x(:,2);
-                x = x(:,1);
-            end
-            assert(obj.inIm(x,y),'Coordinates must be integers between (1,1) and (%d,%d)',obj.Width,obj.Height);
-            
-            % Reshape using byCols so that the rows match spatial linear
-            % indexing. History is appended here first so that arguments of
-            % px are sound for the cube before byCols.
-            % Note the order of indexing.
-            obj.History = {{'Selected pixels retained',@px,x,y}};
-            idx = sub2ind(obj.Size(1:2),y,x);
-            obj.Data = obj.byCols.Data(idx,1,:);
-        end
+        % Pixel selection. See px.m
+        [obj, cx] = px(obj,cx)
         
         function obj = take(obj,n)
             %TAKE Take the first n pixel spectra (in column order)
