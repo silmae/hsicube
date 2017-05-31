@@ -500,7 +500,7 @@ classdef Cube
             enviwrite(obj.Data, info, datafile, hdrfile);
         end
 
-        %% 
+        %% Utilities
         
         function bool = inBounds(obj,cx)
             %INBOUNDS Check whether the given indices are within bounds
@@ -525,32 +525,10 @@ classdef Cube
             end
         end
     end
-        
-    
-    %% Private methods %%
-    
-    methods (Access = 'private')
-        
-        
-        function filename = generateFileName(obj,name)
-            %GENERATEFILENAME Generate a filename based on Cube history
-            % filename = generateFileName(name)
-            % Returns a filename (without path or extension) using the format
-            %  name-WidthxHeightxnBands-Quantity
-            % If name is not given, uses the original filename without
-            % extension or path parts.
-            
-            if nargin < 2
-                [~, name, ~] = fileparts(obj.Files{1});
-            end
-            
-            size = sprintf('%dx%dx%d',obj.Width,obj.Height,obj.nBands);
-            nameparts  = {name, size, obj.Quantity};
-            filename = strjoin(nameparts,'-');
-        end
-    end
     
     methods (Static)
+
+        %% Object saving and loading 
         
         function saveToFile(obj, filename, overwrite)
             %SAVETOFILE Save cube(s) to a file
