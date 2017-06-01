@@ -1,7 +1,7 @@
 classdef ENVI
     methods (Static)
         % Read Cube data from an ENVI file
-        [cube] = read(filename);
+        [cube] = read(filenamem, qty);
         
         % Write Cube data to an ENVI file
         [cube] = write(cube, filename);
