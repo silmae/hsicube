@@ -330,34 +330,67 @@ classdef Cube
             obj = obj.px(pxy);
         end
         
-        %% Operations %%
-
-        function [obj,d] = divideBy(obj,d,qty)
-            %DIVIDEBY Divide the data elementwise by the given data
-            % divideBy(d) divides the data in the cube by the values in
-            % the given cube or data matrix d. The result quantity will be
-            % set as "qty_cube / qty_d", or "qty_cube / unknown" if a
-            % matrix was supplied 
-            % divideBy(wr,qty) will do the same, but set the result
-            % quantity to the given qty.
-            %
-            % The dividing data must have the same number of bands as teh 
-                 
-            % Sanity checks
-            assert(obj.nBands == d.nBands, 'Divisor has %d bands, expected %d', d.nBands, obj.nBands);
-            
-            % Use automatic expansion to calculate different dimensions
-            % Always operate on doubles
-            obj.Data = bsxfun(@rdivide, double(obj.Data), double(d.Data));
+        %% Arithmetic operations %%
+        % 
+        % Arithmetic operations are overloaded to support matching sized
+        % Cube objects. Metadata is carried over from the first argument,
+        % with the exception of Quantity, which will be set to Unknown
+        % unless supplied (using e.g. plus(a,b,qty) syntax).
+        
+        function obj = plus(obj, x, qty)
+            obj.checkOperands(obj, x);
             
             if nargin < 3
-                qty = [obj.Quantity, ' / ' , d.Quantity];
+                qty = ['(', obj.Quantity, ' + ', x.Quantity, ')'];
             end
+            
+            obj.Data = bsxfun(@plus, obj.Data, x.Data);
             obj.Quantity = qty;
-            obj.Files    = d.Files(:);
-            obj.History  = {{'Calculated reflectance using white reference', @divideBy, d.History}};
+            obj.Files    = x.Files(:);
+            obj.History  = {{'Added with another Cube', @plus, x.History}};
         end
         
+        function obj = minus(obj, x, qty)
+            obj.checkOperands(obj, x);
+            
+            if nargin < 3
+                qty = ['(', obj.Quantity, ' - ', x.Quantity, ')'];
+            end
+            
+            obj.Data = bsxfun(@minus, obj.Data, x.Data);
+            obj.Quantity = qty;
+            obj.Files    = x.Files(:);
+            obj.History  = {{'Substracted by another Cube', @minus, x.History}};
+        end
+        
+        function obj = times(obj, x, qty)
+            obj.checkOperands(obj, x);
+            
+            if nargin < 3
+                qty = ['(', obj.Quantity, ' * ', x.Quantity, ')'];
+            end
+            
+            obj.Data = bsxfun(@times, obj.Data, x.Data);
+            obj.Quantity = qty;
+            obj.Files    = x.Files(:);
+            obj.History  = {{'Multiplied elementwise by another Cube', @times, x.History}};
+        end
+        
+        function obj = rdivide(obj, x, qty)
+            obj.checkOperands(obj, x);
+            
+            if nargin < 3
+                qty = ['(', obj.Quantity, ' / ', x.Quantity, ')'];
+            end
+            
+            obj.Data = bsxfun(@rdivide, obj.Data, x.Data);
+            obj.Quantity = qty;
+            obj.Files    = x.Files(:);
+            obj.History  = {{'Divided elementwise by another Cube', @rdivide, x.History}};
+        end
+        
+        %% Operations %%
+
         function obj = map(obj,f,history,qty,wlunit,wls,fwhm)
             %MAP Applies the given function on the cube data
             % map(f,history,qty,wlunit,wls,fwhm) applies the function f on 
@@ -506,7 +539,23 @@ classdef Cube
     end
     
     methods (Static)
-
+        
+        function checkOperands(a, b)
+            %CHECKOPERANDS Check Cubes for arithmetic operand compatibility
+            % and error if they are not matching.
+            
+            assert(isa(a, 'Cube') && isa(b, 'Cube'), ...
+                'Cube:InvalidOperandType', ...
+                'Both operands must be Cubes');
+            
+            bool = isequal(a.Size, b.Size);
+            
+            assert(bool, ...
+                'Cube:OperandSizeMismatch', ...
+                'Operand sizes %s and %s are incompatible',...
+                mat2str(a.Size), mat2str(b.Size));
+        end
+        
         %% Object saving and loading 
         
         function saveToFile(obj, filename, overwrite)
