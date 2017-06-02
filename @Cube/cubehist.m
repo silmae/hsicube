@@ -65,7 +65,7 @@ if showPlot
     h = imagesc(rot90(counts));
     ax = gca;
     ax.YTick = [1, nBins];
-    ax.YTickLabel = num2str(bin_edges(0), bin_edges(end));
+    ax.YTickLabel = num2str(bin_edges(1), bin_edges(end));
 %     if obj.Normalized
 %         ax.YTickLabel = num2str([1; 0]);
 %     else
