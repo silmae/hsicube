@@ -4,7 +4,6 @@ function [cube] = write(cube, filename)
 % metadata to the given ENVI data and header files. 'filename'
 % should be the desired filename without the file extension.
 % Currently does not save the object history.
-% Note that this will overwrite existing files without warning.
 
 % Generate ENVI header info
 info = enviinfo(cube.Data);
@@ -15,5 +14,7 @@ info.fwhm = ['{', num2str(cube.FWHM, '%f, '), '}'];
 
 hdrfile = [filename, '.hdr'];
 datafile = [filename, '.dat'];
+assert(exist(hdrfile, 'file')==0, 'Header file %s already exists, aborting', hdrfile);
+assert(exist(datafile, 'file')==0, 'Data file %s already exists, aborting', datafile);
 enviwrite(cube.Data, info, datafile, hdrfile);
 end
