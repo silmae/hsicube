@@ -10,7 +10,7 @@ function [obj, idx] = bands(obj,b)
 % Input validation
 assert(isvector(b), ...
     'Cube:InvalidIdxShape', 'Bands must be specified as a row or column vector');
-assert(all(isint(b)),... % Note that this passes for logical indices
+assert(all(Utils.isint(b)),... % Note that this passes for logical indices
     'Cube:InvalidBandIdx', 'Band indices must be logical or integers between %d and %d', 1, obj.nBands);
 if islogical(b)
     assert(length(b) == obj.nBands, ...

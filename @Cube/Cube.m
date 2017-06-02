@@ -303,7 +303,7 @@ classdef Cube
             % Usage: take(N), where n = 1,...,Area returns a cube
             % containing the first n pixels in a single column.
             % If n > Area, returns all the pixels.
-            assert(isnatural(n), 'N must be a natural number');
+            assert(Utils.isnatural(n), 'N must be a natural number');
             
             if n > obj.Area
                 n = obj.Area;
@@ -524,7 +524,7 @@ classdef Cube
             % must be integer values, else we return false.
             % INBOUNDS([x, y]) does the same without the bands check.
             
-            assert(all(isnatural(cx(:))), 'Cube:UnnaturalCoordinates', ...
+            assert(all(Utils.isnatural(cx(:))), 'Cube:UnnaturalCoordinates', ...
                 'Coordinate values must be natural numbers');
             
             % isnatural checks > 0, we only need to check max bound
