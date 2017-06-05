@@ -27,11 +27,10 @@ classdef ENVITest < matlab.unittest.TestCase
            data = gallery('uniformdata', [height, width, nbands], 1);
            wls  = gallery('uniformdata', [1, nbands], 1);
            fwhms= gallery('uniformdata', [1, nbands], 2);
-           % Suppress default value warnings for clearer test output
-           warning('off', 'Cube:DefaultQuantity');
-           testCase.testCube = Cube(data,'wl',wls,'fwhm',fwhms);
-           % Turn warnings back on
-           warning('on', 'all');
+           
+           testCase.testCube = Cube(data, ...
+               'quantity', 'Testdata',...
+               'wlu', 'nm', 'wl', wls, 'fwhm', fwhms);
         end
     end
     
@@ -52,8 +51,25 @@ classdef ENVITest < matlab.unittest.TestCase
         end
         
         function writeReadMetaIdentity(testCase)
-            % Writing a Cube to ENVI should preserve the metadata, at least 
-            % up to single precision
+            % Writing a Cube to ENVI preserves wavelength and fwhm
+            % metadata (up to 6 decimals)
+            orig = testCase.testCube;
+            tol = 1e-6;
+            tmpfile = tempname;
+            
+            ENVI.write(orig, tmpfile);
+            new = ENVI.read([tmpfile, '.dat']);
+            delete([tmpfile, '.dat']);
+            delete([tmpfile, '.hdr']);
+            
+            testCase.verifyEqual(new.WavelengthUnit, orig.WavelengthUnit, 'Wavelength unit changed');
+            testCase.verifyLessThan(abs(new.Wavelength - orig.Wavelength), tol, 'Wavelengths changed');
+            testCase.verifyLessThan(abs(new.FWHM - orig.FWHM), tol, 'Wavelengths changed');
+        end
+        
+        function readDefaultQuantity(testCase)
+            % ENVI format does not contain the quantity, so reading a file
+            % without specifying it should result in Unknown quantity
             orig = testCase.testCube;
             tmpfile = tempname;
             
@@ -62,8 +78,21 @@ classdef ENVITest < matlab.unittest.TestCase
             delete([tmpfile, '.dat']);
             delete([tmpfile, '.hdr']);
             
-            testCase.verifyEqual(single(new.Wavelength), single(orig.Wavelength), 'Wavelengths changed');
-            testCase.verifyEqual(single(new.FWHM), single(orig.FWHM), 'FWHMs changed');
+            testCase.verifyEqual(new.Quantity, 'Unknown');
+        end
+        
+        function readSuppliedQuantity(testCase)
+            % If a quantity is supplied, the Cube returned by ENVI.read
+            % should match the one given
+            orig = testCase.testCube;
+            tmpfile = tempname;
+            
+            ENVI.write(orig, tmpfile);
+            new = ENVI.read([tmpfile, '.dat'], orig.Quantity);
+            delete([tmpfile, '.dat']);
+            delete([tmpfile, '.hdr']);
+            
+            testCase.verifyEqual(new.Quantity, orig.Quantity);
         end
         
         function findhdrFileNotFound(testCase)
