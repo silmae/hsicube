@@ -391,83 +391,14 @@ classdef Cube
         
         %% Operations %%
 
-        function obj = map(obj,f,history,qty,wlunit,wls,fwhm)
-            %MAP Applies the given function on the cube data
-            % map(f,history,qty,wlunit,wls,fwhm) applies the function f on 
-            % the data and returns a cube with the resulting data. The user
-            % must supply an explanatory history string to be included in
-            % the result history.
-            % The user must supply a new quantity, wavelengths, fwhms and
-            % wavelength unit that correspond to the new data. Note that
-            % a validity check on the supplied values is done AFTER
-            % computing f, and if errors occur, the resulting data will be
-            % lost.
-            
-            % Do some validity checks beforehand (not enough to guarantee
-            % success, since the result of f and the supplied values might 
-            % conflict)
-            assert(isa(f,'function_handle'),...
-                'Expected a valid function handle');
-            assert(CubeArgs.isValidQuantity(qty),...
-                'Quantity specification must be a non-empty char array');
-            assert(ischar(wlunit),...
-                'Wavelength unit specification must be a char array');
-            assert(ischar(history),...
-                'Explanatory history entry must be a string');
-            
-            % Hope for the best and let setters fail on any inconsistancies.
-            obj.Data       = f(obj.Data);
-            obj.Quantity   = qty;
-            obj.Wavelength = wls;
-            obj.FWHM       = fwhm;
-            obj.WavelengthUnit = wlunit;
-            obj.History    = {{'Applied a function on the data',...
-                @map, f, history, qty, wls, fwhm, wlunit}};
-        end
+        % Apply function on the data. See map.m
+        obj = map(obj,f,history,qty,wlunit,wls,fwhm)
         
-        function obj = mapSpectra(obj,f,history,qty,wlunit,wls,fwhm)
-            %MAPSPECTRA Apply a function on a list of the spectra
-            % mapSpectra(f,history,qty,wlunit,wls,fwhm) applies the function
-            % f on the data, reordered as a columnwise matrix of the pixel 
-            % spectra. The result returned by the function will be reshaped
-            % to the original image dimensions. The user must supply an 
-            % explanatory history string to be included in the result history.
-            % The user must supply a new quantity, wavelengths, fwhms and
-            % wavelength unit that correspond to the new data. Note that
-            % a validity check on the supplied values is done AFTER
-            % computing f, and if errors occur, the resulting data will be
-            % lost. Note that f must preserve the area of the image.
-            
-            % The data will have a singleton width dimension after byCols,
-            % so we must deal with it by wrapping the given function.
-            g = @(x) permute(shiftdim(f(squeeze(x)), -1), [2 1 3]);
-            
-            obj = obj.byCols.map(g,history,qty,wlunit,wls,fwhm).unCols(obj.Width, obj.Height);
-        end
+        % Apply function on each spectrum. See mapSpectra.m
+        obj = mapSpectra(obj,f,history,qty,wlunit,wls,fwhm)
         
-        function obj = mapBands(obj, f, history, qty)
-            %MAPBANDS Apply a function on each band of the data
-            % mapBands(f,history,qty) applies f on each band (image) and
-            % returns a Cube with the resulting data. User must supply a
-            % history string to be included in the result history, and the
-            % quantity specification for the new data.
-            % Changes in wavelength and fwhm values are not supported,
-            % though the spatial dimensions of the data may change.
-            
-            assert(isa(f,'function_handle'),...
-                'Expected a valid function handle');
-            assert(CubeArgs.isValidQuantity(qty),...
-                'Quantity specification must be a non-empty char array');
-            
-            for b = obj.Bands
-                tmp(:,:,b) = f(obj.Data(:,:,b));
-            end
-            
-            obj.Data     = tmp;
-            obj.Quantity = qty;
-            obj.History  = {{'Applied function on each band',...
-                f, history, qty}};
-        end
+        % Apply function on each layer (band). See mapBands.m
+        obj = mapBands(obj, f, history, qty)
         
         %% Reductions %%
         
@@ -490,26 +421,6 @@ classdef Cube
             %MEDIAN Returns the spatial median spectra.
             obj.Data    = median(obj.byCols.Data,1);
             obj.History = {{'Reduced to spatial median',@median}};
-        end
-        
-        function obj = writeENVI(obj, filename)
-            %WRITEENVI Save cube data to an ENVI format file
-            % Cube.writeENVI(filename) saves the Cube data and applicable
-            % metadata to the given ENVI data and header files. 'filename' 
-            % should be the desired filename without the extension.
-            % Currently does not save the object history.
-            % NOTE: Will overwrite existing files.
-            
-            % Generate ENVI header info
-            info = enviinfo(obj.Data);
-            info.description = ['{', strjoin(obj.Files, ' '), '}'];
-            info.wavelength_units = obj.WavelengthUnit;
-            info.wavelength = ['{', num2str(obj.Wavelength, '%f, '), '}'];
-            info.fwhm = ['{', num2str(obj.FWHM, '%f, '), '}'];
-            
-            hdrfile = [filename, '.hdr'];
-            datafile = [filename, '.dat'];
-            enviwrite(obj.Data, info, datafile, hdrfile);
         end
 
         %% Utilities
