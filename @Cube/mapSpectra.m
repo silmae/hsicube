@@ -1,4 +1,4 @@
-function obj = mapSpectra(obj,f,history,qty,wlunit,wls,fwhm)
+function obj = mapSpectra(obj,f,varargin)
 %MAPSPECTRA Apply a function on a list of the spectra
 % mapSpectra(f,history,qty,wlunit,wls,fwhm) applies the function
 % f on the data, reordered as a columnwise matrix of the pixel
@@ -15,5 +15,5 @@ function obj = mapSpectra(obj,f,history,qty,wlunit,wls,fwhm)
 % so we must deal with it by wrapping the given function.
 g = @(x) permute(shiftdim(f(reshape(x, [obj.Area, obj.nBands])), -1), [2 1 3]);
 
-obj = obj.byCols.map(g,history,qty,wlunit,wls,fwhm).unCols(obj.Width, obj.Height);
+obj = obj.byCols.map(g,varargin{:}).unCols(obj.Width, obj.Height);
 end
