@@ -25,12 +25,14 @@ classdef MapSpectraTest < matlab.unittest.TestCase
     end
 
     properties (TestParameter)
-        % Functions to test
+        % Valid functions to test. 
+        % Input arrays should be size [N, Bands]
+        % Output arrays should be size [N, newBands]
         fs = struct('id', @(x) x, ...
             'square', @(x) x.*x, ...
             'neg', @(x) -x, ...
-            'reverse', @reverse, ...
-            'ends', @(x) [x(1),x(end)]);
+            'flip', @(x)flip(x,2), ...
+            'ends', @(x) [x(:,1),x(:,end)]);
     end
     
     methods (TestClassSetup)
