@@ -48,6 +48,15 @@ classdef MapSpectraTest < matlab.unittest.TestCase
     end
     
     methods (Test)
+        function idMapSpectra(testCase)
+            % mapSpectra(id) should not change the data
+            id = @(x) x;
+            orig = testCase.testCube;
+            new = orig.mapSpectra(id);
+            
+            testCase.verifyEqual(new.Data, orig.Data);
+        end
+        
         function spatialDimensions(testCase, fs)
             % mapSpectra preserves the spatial dimensions
             orig = testCase.testCube;
