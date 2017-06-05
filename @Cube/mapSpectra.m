@@ -1,15 +1,16 @@
 function obj = mapSpectra(obj,f,varargin)
 %MAPSPECTRA Apply a function on a list of the spectra
-% mapSpectra(f,history,qty,wlunit,wls,fwhm) applies the function
-% f on the data, reordered as a columnwise matrix of the pixel
-% spectra. The result returned by the function will be reshaped
-% to the original image dimensions. The user must supply an
-% explanatory history string to be included in the result history.
-% The user must supply a new quantity, wavelengths, fwhms and
-% wavelength unit that correspond to the new data. Note that
-% a validity check on the supplied values is done AFTER
+% mapSpectra(f,...) applies the function f on the data, reordered as a 
+% columnwise matrix of the pixel spectra. The result returned by the 
+% function will be reshaped to the original image dimensions, meaning that
+% f must necessarily preserve the number of rows in the data (area of the
+% cube).
+%
+% mapSpectra(f, 'Name', 'Value') allows setting new values for the returned 
+% Cube metadata. Default values will be generated if not supplied.
+% Note that the validity check on the supplied values is done AFTER
 % computing f, and if errors occur, the resulting data will be
-% lost. Note that f must preserve the area of the image.
+% lost.
 
 % The data will have a singleton width dimension after byCols,
 % so we must deal with it by wrapping the given function.
