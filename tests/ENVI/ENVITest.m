@@ -67,6 +67,34 @@ classdef ENVITest < matlab.unittest.TestCase
             testCase.verifyLessThan(abs(new.FWHM - orig.FWHM), tol, 'Wavelengths changed');
         end
         
+        function writeHeaderFileExistsError(testCase)
+            % Unless overwrite is set, write should error when the 
+            % hdr file exists
+
+            cube = testCase.testCube;
+            tmpfile = tempname;
+            
+            % Create an empty .hdr file
+            fclose(fopen([tmpfile, '.hdr'],'w'));
+           
+            testCase.verifyError(@()ENVI.write(cube, tmpfile),'ENVI:ExistingHeaderFile');
+            delete([tmpfile, '.hdr']);
+        end
+        
+        function writeDataFileExistsError(testCase)
+            % Unless overwrite is set, write should error when the 
+            % data file exists
+
+            cube = testCase.testCube;
+            tmpfile = tempname;
+            
+            % Create an empty .hdr file
+            fclose(fopen([tmpfile, '.dat'],'w'));
+           
+            testCase.verifyError(@()ENVI.write(cube, tmpfile),'ENVI:ExistingDataFile');
+            delete([tmpfile, '.dat']);
+        end
+        
         function readDefaultQuantity(testCase)
             % ENVI format does not contain the quantity, so reading a file
             % without specifying it should result in Unknown quantity
