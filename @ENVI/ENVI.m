@@ -4,7 +4,7 @@ classdef ENVI
         [cube] = read(filenamem, qty);
         
         % Write Cube data to an ENVI file
-        [cube] = write(cube, filename);
+        [cube] = write(cube, filename, overwrite);
         
         % Find the matching header file for a file
         [hdrfile] = findhdr(filename);
