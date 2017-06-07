@@ -194,7 +194,7 @@ classdef Cube
                 || isequal(size(value),[obj.nBands,1]), ...
                    'Cube:IncorrectWavelength', ...
                    'Given wavelengths do not match the data!');
-            obj.Wavelength = reshape(value,[obj.nBands,1]);
+            obj.Wavelength = reshape(value,[1,obj.nBands]);
         end
         
         function obj = set.FWHM(obj,value)
@@ -202,7 +202,7 @@ classdef Cube
                 || isequal(size(value),[obj.nBands,1]), ...
                    'Cube:IncorrectFWHM', ...
                    'Given FWHMs do not match the data!');
-            obj.FWHM = reshape(value, [obj.nBands,1]);
+            obj.FWHM = reshape(value, [1,obj.nBands]);
         end
         
         % Enforce that file list and history are always appended.
