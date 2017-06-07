@@ -394,13 +394,13 @@ classdef Cube
         %% Operations %%
 
         % Apply function on the data. See map.m
-        obj = map(obj,f,history,qty,wlunit,wls,fwhm)
+        obj = map(obj, f, varargin)
         
         % Apply function on each spectrum. See mapSpectra.m
-        obj = mapSpectra(obj,f,history,qty,wlunit,wls,fwhm)
+        obj = mapSpectra(obj, f, varargin)
         
         % Apply function on each layer (band). See mapBands.m
-        obj = mapBands(obj, f, history, qty)
+        obj = mapBands(obj, f, qty)
         
         %% Reductions %%
         
