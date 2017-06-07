@@ -95,6 +95,28 @@ classdef ENVITest < matlab.unittest.TestCase
             delete([tmpfile, '.dat']);
         end
         
+        function writeFileOverwrite(testCase)
+            % When overwrite is set, write should overwrite the files
+            
+            orig = testCase.testCube;
+            tmpfile = tempname;
+            
+            % Create an empty .hdr and dat files
+            fclose(fopen([tmpfile, '.dat'],'w'));
+            fclose(fopen([tmpfile, '.hdr'],'w'));
+            
+            % Write over the empty file
+            ENVI.write(orig, tmpfile, 'overwrite');
+            
+            % Read the file and check that we did overwrite it
+            new = ENVI.read([tmpfile, '.dat']);
+            
+            testCase.verifyEqual(new.Data, orig.Data);
+            
+            delete([tmpfile, '.dat']);
+            delete([tmpfile, '.hdr']);
+        end
+        
         function readDefaultQuantity(testCase)
             % ENVI format does not contain the quantity, so reading a file
             % without specifying it should result in Unknown quantity
