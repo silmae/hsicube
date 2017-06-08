@@ -38,32 +38,32 @@ classdef FlipTest < matlab.unittest.TestCase
     
     methods (Test)
         
-        function flipHorizDimension(testCase)
-            % Horizontal flip flips the data in the second dimension
-            flipped = flip(testCase.testCube.Data, 2);
-            testCase.verifyEqual(testCase.testCube.flipHoriz.Data, flipped);
-        end
-        
-        function flipVertDimension(testCase)
-            % Vertical flip flips the data in the first dimension
+        function flipudDimension(testCase)
+            % flipud flips the data in the first dimension
             flipped = flip(testCase.testCube.Data, 1);
-            testCase.verifyEqual(testCase.testCube.flipVert.Data, flipped);
+            testCase.verifyEqual(testCase.testCube.flipud.Data, flipped);
         end
         
-        function flipHorizSelfInverse(testCase)
-            % Flipping twice horizontally does nothing
-            testCase.verifyEqual(testCase.testCube.flipHoriz.flipHoriz.Data, testCase.testCube.Data);
+        function fliplrDimension(testCase)
+            % fliplr flips the data in the second dimension
+            flipped = flip(testCase.testCube.Data, 2);
+            testCase.verifyEqual(testCase.testCube.fliplr.Data, flipped);
         end
         
-        function flipVertSelfInverse(testCase)
-            % Flipping twice vertically does nothing
-            testCase.verifyEqual(testCase.testCube.flipVert.flipVert.Data, testCase.testCube.Data);
+        function flipudSelfInverse(testCase)
+            % Flipping twice upside-down does nothing
+            testCase.verifyEqual(testCase.testCube.flipud.flipud.Data, testCase.testCube.Data);
         end
         
-        function flipHorizVertOrder(testCase)
+        function fliplrSelfInverse(testCase)
+            % Flipping twice left-to-right does nothing
+            testCase.verifyEqual(testCase.testCube.fliplr.fliplr.Data, testCase.testCube.Data);
+        end
+        
+        function flipudVertOrder(testCase)
             % Flipping both horizontally and vertically in either order
             % should give the same data.
-            testCase.verifyEqual(testCase.testCube.flipVert.flipHoriz.Data, testCase.testCube.flipHoriz.flipVert.Data);
+            testCase.verifyEqual(testCase.testCube.fliplr.flipud.Data, testCase.testCube.flipud.fliplr.Data);
         end
         
     end
