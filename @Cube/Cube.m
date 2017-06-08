@@ -264,6 +264,18 @@ classdef Cube
             obj.History = {{'Flipped vertically',@flipVert}};
         end
         
+        function obj = rot90(obj, k)
+            %ROT90 Rotate the image 90 degrees counterclockwise
+            % ROT90(k) rotates the image k times counterclockwise in 90
+            % degree increments.
+            if nargin < 2
+                k = 1;
+            end
+            
+            obj.Data = rot90(obj.Data,k);
+            obj.History = {{'Rotated counterclockwise k times', @rot90, k}};
+        end
+        
         function obj = byCols(obj)
             %BYCOLS Concatenates the spatial pixel columns
             % Concatenates the spatial dimensions columnwise, returning
