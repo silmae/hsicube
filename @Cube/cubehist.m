@@ -16,8 +16,8 @@ function [obj, counts, bin_edges, h] = cubehist(obj, flag, showPlot, bin_edges)
 if nargin < 2
     flag = 'log';
 else
-    assert(strcmp(flag,'log') || strcmp(flag, 'linear') || strcmp(flag, 'cum'),...
-        'Flag not recognized. Pass "log" or "linear" to select the scaling, or "cum" for a cumulative histogram.');
+    assert(strcmp(flag,'log') || strcmp(flag, 'log10') || strcmp(flag, 'linear') || strcmp(flag, 'cum'),...
+        'Flag not recognized. Pass "log", "log10" or "linear" to select the scaling, or "cum" for a cumulative histogram.');
 end
 
 if nargin < 3
@@ -55,7 +55,9 @@ end
 
 % Normalization of histogram
 if strcmp(flag, 'log')
-    counts = log(counts)./size(tmp,1);
+    counts = log(counts./size(tmp,1));
+elseif strcmp(flag, 'log10')
+    counts = log10(counts./size(tmp,1));
 elseif strcmp(flag, 'linear')
     counts = counts./size(tmp,1);
 end
