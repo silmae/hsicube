@@ -1,12 +1,15 @@
 function [cube] = read(filename, qty)
 %ENVI.READ Reads an ENVI format file as a Cube object
-% [cube] = read(filename) returns a Cube object containing the data in
-% filename. The given filename should be the full path to an ENVI file
-% (with a .dat extension)
+% [cube] = ENVI.READ(filename, quantity) returns a Cube object containing
+% the data in filename. The given filename should be the full path to an
+% ENVI data file (.dat extension). The optional quantity parameter sets the
+% quantity of the result Cube. If no quantity is given, it is set to 
+% 'Unknown'
 
 hdrfile = ENVI.findhdr(filename);
+fprintf('Found ENVI header file %s\n', hdrfile);
 
-fprintf('Reading ENVI data from %s\n', hdrfile);
+fprintf('Reading ENVI data from %s\n', filename);
 [g, info] = enviread(filename, hdrfile);
 fprintf('ENVI data read.\n');
 
