@@ -1,8 +1,16 @@
-# Cube - a class for hyperspectral cube analysis
+# hsicube
 
-This package contains the following:
+A MATLAB framework for hyperspectral cube analysis.
 
-  - @Cube/     - The main Cube class
-  - @CubeArgs/ - An InputParser subclass that handles some of the argument parsing
-  - Utils/     - Utility functions used by the class
-  - tests/     - Unit tests for the Cube class and utility functions
+This package contains the following components:
+
+  - [The main Cube class](@Cube/@Cube.m)
+  - [Helper class](@ENVI/ENVI.m) for reading and writing cube data to ENVI files
+Requires [ENVI file reader / writer](http://se.mathworks.com/matlabcentral/fileexchange/27172-envi-file-reader-writer).
+  - [An InputParser subclass](@CubeArgs/@CubeArgs.m) that handles some of the argument parsing
+  - [Utility functions](@Utils/Utils.m) used by the class, collected as a class
+  - [Unit tests](tests/) for the above components
+
+For usage, it is enough to add this directory to the MATLAB path.
+
+
