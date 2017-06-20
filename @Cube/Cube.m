@@ -334,23 +334,6 @@ classdef Cube
             obj = obj.byCols.px(ones(1,n)',(1:n)');
         end
         
-        function [obj, pxy] = sample(obj,n,subdivs)
-            %SAMPLE Sample the cube spatially using sudoku-like LHS
-            % [obj, pxy] = sample(n,subdivs) returns n sample spatial 
-            % pixels from the cube that are evenly distributed in a 
-            % subdivs^2 grid spanning the image. If subdivs is not given, 
-            % assumes 1 (LHS sampling). The second output contains a matrix
-            % of the x and y coordinates sampled.
-            if nargin < 3
-                subdivs = 1;
-            end
-            % TODO: History is appended first here, then in px. 
-            %       Possibly confusing.
-            obj.History = {{'Sampled using sudoku sampling',@sample,n,subdivs}};
-            pxy = sudoku_2d(n,subdivs,[obj.Width,obj.Height]);
-            obj = obj.px(pxy);
-        end
-        
         %% Arithmetic operations %%
         % 
         % Arithmetic operations are overloaded to support matching sized
