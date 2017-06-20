@@ -44,18 +44,25 @@ classdef Cube
         function cube = Cube(varargin)
             %CUBE Construct a Cube from given data
             % Usage:
-            %  Cube(filename, quantity) reads data from the given file with
-            %  the given quantity (default quantity 'Unknown')
-            %  
-            %  Cube(..., 'br', data) additionally attempts to calibrate the
-            %  data using the given black reference, which may be a
-            %  filename or existing Cube.
+            %  c = CUBE(arr) creates a Cube object from the array arr with
+            %  default metadata (and generates warnings of the fact).
+            %  c = CUBE(arr, ..., 'Name', value) syntax can be used to supply
+            %  the following metadata:
+            %   'wl'       : 1 x N or N x 1 vector of wavelengths
+            %   'wlu'      : Wavelength unit as a char array
+            %   'fwhm'     : 1 x N or N x 1 vector of FWHM values
+            %   'quantity' : Data quantity (e.g. 'Reflectance')
+            %   'history'  : Cell array containing provenance information
+            %   'file'     : Path to file of origin (must match an existing
+            %                file). Usually set by a file reader such as
+            %                ENVI.read.
             %
-            %  Cube(..., 'wr', data) attempts to calculate reflectance from
-            %  raw or radiance data using the given white reference.
-            %
-            % FIXME: Enviread errors should be caught and handled to have
-            %        more meaningful error messages and behaviour.
+            % If given metadata does not match the array (namely,
+            % wavelengths or fwhms), an error will be thrown.
+            % 
+            % The constructor may also be called with an existing Cube object
+            % to copy the data and possibly update existing metadata:
+            % c = CUBE(cube, ..., 'Name', value)
             
         if nargin > 0  % Calling without parameters explicitly does nothing.
         
@@ -185,10 +192,10 @@ classdef Cube
         end
         
         % Enforce that Wavelength and FWHM correspond to Data in size.
+        % Checked using nBands to stay independent of possible changes
+        % in implementation (namely orientation of the data matrix).
         % TODO: Does not prevent mismatches if we forget to set either
         %       when changing the data.
-        % FIXME: Is there a way to avoid referencing dependent properties
-        %        here?
         function obj = set.Wavelength(obj,value)
             assert(isequal(size(value),[1,obj.nBands]) ...
                 || isequal(size(value),[obj.nBands,1]), ...
@@ -215,9 +222,9 @@ classdef Cube
         end
         
         % Enforce the type of Data to numeric and warn if precision
-        % changes.
-        % FIXME: Is there a way to avoid referencing dependent properties
-        %        here?
+        % changes. 
+        % Checked using Type to stay independent of underlying
+        % implementation.
         function obj = set.Data(obj,value)
             assert(isnumeric(value),'Attempted to assign non-numeric data!');
             if ~strcmp(class(value),obj.Type) && ~isempty(obj.Data)
@@ -228,7 +235,7 @@ classdef Cube
         
         % Data quantity must be a non-empty char array
         function obj = set.Quantity(obj,value)
-            assert(~isempty(value), 'Attempted to assign empty quantity!');
+            assert(~isempty(value), 'Quantity must be a non-empty char array');
             assert(ischar(value), 'Quantity must be a non-empty char array');
             obj.Quantity = value;
         end
@@ -281,7 +288,7 @@ classdef Cube
             % Concatenates the spatial dimensions columnwise, returning
             % an Area x 1 x Bands cube
             obj.Data    = reshape(obj.Data,[obj.Area,1,obj.nBands]);
-            obj.History = {{'Spatial columns concatenated',@byCols}};
+            obj.History = {{'Spatial columns stacked as list',@byCols}};
         end
             
         function obj = unCols(obj, W, H)
@@ -289,7 +296,7 @@ classdef Cube
             % Given shape = [Width Height], attempts to restructure the
             % (W*H) x 1 x Bands Cube data into an Width x Height x Bands cube.
             
-            assert(obj.Height == obj.Area, 'Data must be columnwise ordered spectra!');
+            assert(obj.Height == obj.Area, 'Data must be columnwise ordered list of spectra.');
             
             obj = obj.unmask(true(H, W));
             % History will be added by unmask
