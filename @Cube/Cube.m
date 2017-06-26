@@ -290,21 +290,9 @@ classdef Cube
             obj.Data    = reshape(obj.Data,[obj.Area,1,obj.nBands]);
             obj.History = {{'Spatial columns stacked as list',@byCols}};
         end
-            
-        function obj = unCols(obj, W, H)
-            %UNCOLS Reshape columnwise listed spectra into the given shape
-            % Given shape = [Width Height], attempts to restructure the
-            % (W*H) x 1 x Bands Cube data into an Width x Height x Bands cube.
-            
-            assert(obj.Height == obj.Area, ...
-                'Cube:NotAList', 'Cube data must be columnwise ordered list of spectra.');
-            assert(W * H == obj.Area, ...
-                'Cube:InvalidArea', ...
-                'Given width and height (%d x %d = %d) do not match the number of spectra (%d)', ...
-                W, H, W*H, obj.Area);
-            obj = obj.unmask(true(H, W));
-            % History will be added by unmask
-        end
+        
+        % Reshape columnar data to an image. See unCols.m
+        [obj] = unCols(obj, W, H)
             
         %% Slicing %%
     
