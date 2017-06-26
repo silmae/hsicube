@@ -55,7 +55,7 @@ classdef TakeTest < matlab.unittest.TestCase
             testCase.verifyEqual(taken.Width, 1);
         end
         
-        function byColsResultHeight(testCase)
+        function takeResultHeight(testCase)
             % Height should equal the original area
             area = testCase.testCube.Area;
             taken = testCase.testCube.take(area);
