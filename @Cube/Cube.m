@@ -296,8 +296,12 @@ classdef Cube
             % Given shape = [Width Height], attempts to restructure the
             % (W*H) x 1 x Bands Cube data into an Width x Height x Bands cube.
             
-            assert(obj.Height == obj.Area, 'Data must be columnwise ordered list of spectra.');
-            
+            assert(obj.Height == obj.Area, ...
+                'Cube:NotAList', 'Cube data must be columnwise ordered list of spectra.');
+            assert(W * H == obj.Area, ...
+                'Cube:InvalidArea', ...
+                'Given width and height (%d x %d = %d) do not match the number of spectra (%d)', ...
+                W, H, W*H, obj.Area);
             obj = obj.unmask(true(H, W));
             % History will be added by unmask
         end
