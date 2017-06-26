@@ -251,8 +251,8 @@ classdef Cube
         % Plot pixel spectra. See plot.m
         [obj, ax] = plot(obj,h)
         
-        % See im.m
-        [obj,h] = im(obj,b,hlx,hly)
+        % Display the given band as an image. See im.m
+        [obj,im] = im(obj,b)
         
         % Display selected bands as RGB image. See rgb.m
         [obj,im] = rgb(obj,b)
