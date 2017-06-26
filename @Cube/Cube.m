@@ -254,7 +254,7 @@ classdef Cube
         % See im.m
         [obj,h] = im(obj,b,hlx,hly)
         
-        % See rgb.m
+        % Display selected bands as RGB image. See rgb.m
         [obj,im] = rgb(obj,b)
         
         %% Rearrangement %%
