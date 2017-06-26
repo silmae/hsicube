@@ -1,15 +1,13 @@
-function [obj,h] = plot(obj,h)
-%PLOT Plots each spectra in the cube.
-% Plots at most 50 spectra to save MATLAB from hanging, warns
-% if given more.
-% Uses Cube metadata to set some axis properties.
-% Returns obj.byCols containing the shown spectra and the
-% resulting axes handle.
-
-% If not given an existing axis handle, creates a new one.
-if nargin < 2
-    h = axes();
-end
+function [obj,ax] = plot(obj, h)
+%PLOT Plots spectra in the cube.
+% [c, ax] = cube.PLOT() plots each pixel spectra in cube.
+% If more than 50 pixels are present, limits the plot to the first 50 
+% (columnwise) to prevent MATLAB from choking. Returns the cube containing
+% the plotted spectra (50 first pixels if limit reached, otherwise
+% unchanged) and the handle to the plot axes.
+% 
+% [c, h] = cube.PLOT(h) sets the given figure h as active and uses it for
+% the plot.
 
 % If too many pixels are present, reduces the data to the first
 % 50 spatial pixels (columnwise)
@@ -19,14 +17,23 @@ if obj.Area > 50
 else
     obj = obj.byCols;
 end
-plot(h,obj.Wavelength,squeeze(obj.Data));
 
-% If given reflectance data, scale axis accordingly.
-if strcmp(obj.Quantity,'Reflectance')
-    h.YLim = [0,1];
+% If not given an existing figure handle, creates a new one.
+if nargin < 2
+    h = figure();
+else
+    h = figure(h);
 end
 
+% Set hold on in case we are plotting in an existing figure, then plot
+% the data
+hold on;
+plot(obj.Wavelength,squeeze(obj.Data));
+hold off;
+
 % Set labels based on metadata
-xlabel(h,{'Wavelength',obj.WavelengthUnit});
-ylabel(h,obj.Quantity);
+ax = gca;
+xlabel(ax, {'Wavelength',obj.WavelengthUnit});
+ylabel(ax, obj.Quantity);
+
 end

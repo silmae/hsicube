@@ -248,8 +248,8 @@ classdef Cube
         % See cubehist.m
         [obj,counts,bin_edges,h] = cubehist(obj, flag, showPlot, bin_edges)
         
-        % See plot.m
-        [obj,h] = plot(obj,h)
+        % Plot pixel spectra. See plot.m
+        [obj, ax] = plot(obj,h)
         
         % See im.m
         [obj,h] = im(obj,b,hlx,hly)
