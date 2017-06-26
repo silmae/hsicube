@@ -242,8 +242,8 @@ classdef Cube
         
         %% Visualization %%    
         
-        % See show.m
-        [obj,h] = show(obj)
+        % Open a cube slicer. See slice.m
+        [obj,h] = slice(obj, method)
         
         % See cubehist.m
         [obj,counts,bin_edges,h] = cubehist(obj, flag, showPlot, bin_edges)
