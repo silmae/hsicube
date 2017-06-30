@@ -1,7 +1,9 @@
 classdef Cube
     % Cube A class for hyperspectal datacubes.
-    %   Includes methods for reading data from files and cube manipulations
-    %   while keeping track of the metadata, including full history of operations.
+    % The Cube class is a smart wrapper for handling hyperspectral
+    % datacubes and associated metadata, such as wavelengths and fwhm
+    % values.
+    
     % TODO: History tracking should probably be implemented as a better
     % data structure (possibly value class)
 

@@ -1,4 +1,6 @@
 classdef Utils
+%UTILS Utility functions used by the hsicube package classes
+
     methods (Static)
         % True for integers of any numeric type
         [bool] = isint(A)
