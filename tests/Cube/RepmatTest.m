@@ -101,5 +101,47 @@ classdef RepmatTest < matlab.unittest.TestCase
             testCase.verifyEqual(c.Width, origw);
             testCase.verifyEqual(c.Height, origh);
         end
+        
+        function repmatResultWavelength(testCase, n)
+            % repeating band dimension should repeat the metadata
+            orig = testCase.testCube.Wavelength;
+            c = testCase.testCube.repmat([1,1,n]);
+            testCase.verifyEqual(c.Wavelength, repmat(orig, [1,n]));
+        end
+        
+        function repmatWidthWavelength(testCase, n)
+            % repeating second dimension should preserve the metadata
+            orig = testCase.testCube.Wavelength;
+            c = testCase.testCube.repmat([1,n,1]);
+            testCase.verifyEqual(c.Wavelength, orig);
+        end
+        
+        function repmatHeightWavelength(testCase, n)
+            % repeating first dimension should preserve the metadata
+            orig = testCase.testCube.Wavelength;
+            c = testCase.testCube.repmat([n,1,1]);
+            testCase.verifyEqual(c.Wavelength, orig);
+        end
+        
+        function repmatResultFWHM(testCase, n)
+            % repeating band dimension should repeat the metadata
+            orig = testCase.testCube.FWHM;
+            c = testCase.testCube.repmat([1,1,n]);
+            testCase.verifyEqual(c.FWHM, repmat(orig, [1,n]));
+        end
+        
+        function repmatWidthFWHM(testCase, n)
+            % repeating second dimension should preserve the metadata
+            orig = testCase.testCube.FWHM;
+            c = testCase.testCube.repmat([1,n,1]);
+            testCase.verifyEqual(c.FWHM, orig);
+        end
+        
+        function repmatHeightFWHM(testCase, n)
+            % repeating first dimension should preserve the metadata
+            orig = testCase.testCube.FWHM;
+            c = testCase.testCube.repmat([n,1,1]);
+            testCase.verifyEqual(c.FWHM, orig);
+        end
     end
 end
