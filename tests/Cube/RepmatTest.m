@@ -42,11 +42,32 @@ classdef RepmatTest < matlab.unittest.TestCase
     
     methods (Test)
         
+        function repmatInvalidNsError(testCase)
+            % Invalid replication arguments should throw an error
+            c = testCase.testCube;
+            
+            % Only [1,3]-sized vectors should be allowed
+            testCase.verifyError(@()c.repmat(2), 'Cube:InvalidNs');
+            testCase.verifyError(@()c.repmat([2,2]), 'Cube:InvalidNs');
+            testCase.verifyError(@()c.repmat([2;2]), 'Cube:InvalidNs');
+            testCase.verifyError(@()c.repmat([2;2;2]), 'Cube:InvalidNs');
+            testCase.verifyError(@()c.repmat([2,2;2,2]), 'Cube:InvalidNs');
+        end
+        
         function repmatResultWidth(testCase, n)
             % Second dimension should multiply the width
             orig = testCase.testCube.Width;
             c = testCase.testCube.repmat([1,n,1]);
             testCase.verifyEqual(c.Width, orig * n);
+        end
+        
+        function repmatResultHeightNBands(testCase, n)
+            % Multiplying second dimension should not change height or nbands
+            origb = testCase.testCube.nBands;
+            origh = testCase.testCube.Height;
+            c = testCase.testCube.repmat([1,n,1]);
+            testCase.verifyEqual(c.nBands, origb);
+            testCase.verifyEqual(c.Height, origh);
         end
         
         function repmatResultHeight(testCase, n)
@@ -56,6 +77,15 @@ classdef RepmatTest < matlab.unittest.TestCase
             testCase.verifyEqual(c.Height, orig * n);
         end
         
+        function repmatResultWidthNBands(testCase, n)
+            % Multiplying first dimension should not change width or nbands
+            origb = testCase.testCube.nBands;
+            origw = testCase.testCube.Width;
+            c = testCase.testCube.repmat([n,1,1]);
+            testCase.verifyEqual(c.nBands, origb);
+            testCase.verifyEqual(c.Width, origw);
+        end
+        
         function repmatResultNBands(testCase, n)
             % Third dimension should multiply the bands
             orig = testCase.testCube.nBands;
@@ -63,5 +93,13 @@ classdef RepmatTest < matlab.unittest.TestCase
             testCase.verifyEqual(c.nBands, orig * n);
         end
         
+        function repmatResultWidthHeight(testCase, n)
+            % Multiplying third dimension should not change width or height
+            origw = testCase.testCube.Width;
+            origh = testCase.testCube.Height;
+            c = testCase.testCube.repmat([1,1,n]);
+            testCase.verifyEqual(c.Width, origw);
+            testCase.verifyEqual(c.Height, origh);
+        end
     end
 end
