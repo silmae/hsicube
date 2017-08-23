@@ -46,31 +46,46 @@ for ik = 1:size(tmp,2)
 end
 
 if visualize
-    % Display the counts as an surface in a new figure
     figure
-    h = surf(obj.Wavelength, edges(2:end)-0.5*diff(edges), counts, counts);
-    h.EdgeColor = 'none';
-    h.FaceColor = 'texturemap';
-    h.FaceLighting = 'none';
     
-    % Default to 2d view
-    view(2)
-    ax = gca;
-    axis tight
-    
-    % Set labeling
-    title([normalization, ' for each band and value']);
-    xlabel(ax,obj.WavelengthUnit);
-    ylabel(ax,obj.Quantity);
-    
-    % If brewermap exists in the workspace, use it for the colormap
-    if exist('brewermap.m', 'file') == 2
-        colormap(brewermap(100, '*GnBu'));
+    if obj.nBands == 1
+        % For a single band, just plot the histogram
+        h = histogram('BinEdges', edges, 'BinCounts', counts);
+        title([normalization, ' of pixels per value']);
+        xlabel(obj.Quantity);
+        ylabel(normalization);
+    elseif obj.Area == 1
+        % Similarly for a single pixel, but with different labels
+        h = histogram('BinEdges', edges, 'BinCounts', counts);
+        title([normalization, ' of bands per value']);
+        xlabel(obj.Quantity);
+        ylabel(normalization);
     else
-        colormap(parula);
+        % for multiple bands, display the counts as an surface in a new figure
+        h = surf(obj.Wavelength, edges(2:end)-0.5*diff(edges), counts, counts);
+        h.EdgeColor = 'none';
+        h.FaceColor = 'texturemap';
+        h.FaceLighting = 'none';
+        
+        % If brewermap exists in the workspace, use it for the colormap
+        if exist('brewermap.m', 'file') == 2
+            colormap(brewermap(100, '*GnBu'));
+        else
+            colormap(parula);
+        end
+
+        cb = colorbar('eastoutside');
+        cb.Label.String = normalization;
+        
+        % Default to 2d view
+        view(2)
+        axis tight
+        
+        % Set labeling
+        title([normalization, ' for each band and value']);
+        xlabel(obj.WavelengthUnit);
+        ylabel(obj.Quantity);
     end
     
-    cb = colorbar('eastoutside');
-    cb.Label.String = normalization;
 end
 end
