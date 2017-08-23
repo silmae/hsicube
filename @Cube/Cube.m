@@ -247,8 +247,8 @@ classdef Cube
         % Open a cube slicer. See slice.m
         [obj,h] = slice(obj, method)
         
-        % See cubehist.m
-        [obj,counts,bin_edges,h] = cubehist(obj, flag, showPlot, bin_edges)
+        % See hist.m
+        [obj, counts, edges, h] = hist(obj, normalization, edges, visualize)
         
         % Plot pixel spectra. See plot.m
         [obj, ax] = plot(obj,h)
