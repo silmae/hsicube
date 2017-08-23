@@ -62,6 +62,15 @@ classdef HistTest < matlab.unittest.TestCase
             testCase.verifyLessThan(edges(1), c.Min);
         end
         
+        function histDefaultEdgesMatchHistcounts(testCase)
+            % By default hist should use the default bins that histcounts
+            % gives for the whole data
+            c = testCase.testCube;
+            [~, ~, defaults] = c.hist;
+            [~, expected] = histcounts(squeeze(c.byCols.Data));
+            testCase.verifyEqual(defaults, expected);
+        end
+        
         function histDefaultNormalization(testCase)
             % By default hist should return the unnormalized counts
             c = testCase.testCube;
