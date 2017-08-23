@@ -80,8 +80,10 @@ classdef HistTest < matlab.unittest.TestCase
         end
         
         function histCountsColSums(testCase)
-            % Each column of returned counts should sum to the number of pixels
+            % Each column of returned counts should sum to the number of
+            % pixels (except in the case of a single pixel)
             c = testCase.testCube;
+            testCase.assumeGreaterThan(c.Area, 1);
             [~, counts] = c.hist('count');
             sums = sum(counts, 1);
             expected = ones(1,c.nBands) * c.Area;
@@ -90,8 +92,9 @@ classdef HistTest < matlab.unittest.TestCase
         
         function histProbColSums(testCase)
             % Each column of returned probabilities should sum to 1
-            % (within 2 * eps)
+            % (within 2 * eps) (except in the case of a single pixel)
             c = testCase.testCube;
+            testCase.assumeGreaterThan(c.Area, 1);
             [~, counts] = c.hist('probability');
             sums = sum(counts, 1);
             expected = ones(1,c.nBands);
