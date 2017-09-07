@@ -20,32 +20,34 @@ classdef Cube
         % Default: zeros(0,0,0)
         Data = zeros(0,0,0)
         
-        % FILES Full path(s) of the file(s) the cube data is from. This is
-        % initialized by file reader methods, and the lists are
+        % FILES Full path(s) of the file(s) the cube data originates from.
+        % Initialized by file reader methods. Existing Files lists are
         % concatenated when two or more Cube objects are combined by some
-        % operation.
+        % operation, such as arithmetic operations.
         % Default: {} (empty cell array)
         Files = {}
         
-        % QUANTITY String description of the physical quantity of the data,
-        % for example 'Reflectance' or 'Radiance'. Used internally for
+        % QUANTITY String description of the physical quantity of the data.
+        % For example, 'Reflectance' or 'Radiance'. Used internally for
         % automatic titling or labeling of plots and axes.
         % Default 'Unknown'.
         Quantity = '' % Default set by constructor
         
-        % WAVELENGTHUNIT String description of the unit of the wavelength
-        % and FWHM metadata. Used internally for automatic axis labeling.
+        % WAVELENGTHUNIT String description of the wavelength unit.
+        % Unit for the Wavelength and FWHM metadata. Used internally for 
+        % automatic axis labeling in visualizations.
         % Default: 'Band index' (if default Wavelength data is used)
         %          'Unknown' (if Wavelength data is supplied without unit)
         WavelengthUnit = '' % Default set by constructor
         
-        % WAVELENGTH Center wavelengths for each band in the data as a 
-        % 1 x nBands vector. Used internally as an axis for visualizations.
+        % WAVELENGTH Center wavelengths for each band in the data.
+        % 1 x nBands numerical vector. Used internally as an axis for
+        % visualizations.
         % Default: 1:nBands
         Wavelength = [] % Default set by constructor
         
-        % FWMH Full Width at Half Maximum for each band in the data as a 
-        % 1 x nBands vector.
+        % FWMH Full Width at Half Maximum for each band in the data.
+        % 1 x nBands numerical vector.
         % Default: zeros(1,nBands)
         FWHM            = [] % Default set by constructor
         
