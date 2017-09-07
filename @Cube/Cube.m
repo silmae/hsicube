@@ -69,15 +69,45 @@ classdef Cube
     
     % Always recalculated from the data so they are in sync
     properties (Dependent, SetAccess = 'private')
-        Type   % Type of data (double, float etc.)
-        Min    % Minimum value in the cube
-        Max    % Maximum value in the cube
-        Size   % Size of the data matrix ([Height, Width, Bands])
-        Area   % Pixel count of the image
-        Bands  % The vector 1:nBands (for ease of use)
-        Width  % Width of the image
-        Height % Height of the image
-        nBands % Number of bands
+        % TYPE Numeric type of the data (dependent property).
+        % Equivalent to calling class(cube.Data)
+        Type
+        
+        % MIN Minimum value in the Cube (dependent property).
+        % Equivalent to calling min(Cube.Data(:))
+        Min
+        
+        % MAX Maximum value in the Cube (dependent property).
+        % Equivalent to calling max(Cube.Data(:))
+        Max
+        
+        % SIZE The size of the datacube (dependent property).
+        % Equivalent to calling size(Cube.Data), with the exception that
+        % singleton dimensions are preserved to always return a 1 x 3
+        % vector for consistency, i.e.
+        %  size(ones(3,2))      == [3,2]
+        %  Cube(ones(3,2)).Size == [3,2,1]
+        Size
+        
+        % AREA The number of pixels in the image (dependent property).
+        % Shorthand for calculating Cube.Width times Cube.Height
+        Area
+        
+        % BANDS The vector 1:nBands (dependent property).
+        % Shorthand for 1:Cube.nBands, useful for logical indexing.
+        Bands
+        
+        % WIDTH The width of the datacube (dependent property).
+        % The number of columns in Cube.Data, equal to Cube.Size(2).
+        Width
+        
+        % HEIGHT The height of the datacube (dependent property).
+        % The number of rows in Cube.Data, equal to Cube.Size(1).
+        Height
+        
+        % NBANDS The number of bands in the datacube (dependent property).
+        % The number of bands (layers) in Cube.Data, equal to Cube.Size(3).
+        nBands
     end
     
     methods
