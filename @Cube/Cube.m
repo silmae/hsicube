@@ -16,14 +16,53 @@ classdef Cube
     end
     
     properties (SetAccess = 'private')
-        Data            = zeros(0,0,0) % The raw datacube
-        Files           = {} % Full path(s) of the file(s) the cube corresponds to (if any)
-        Quantity        = '' % Physical quantity of data
-        WavelengthUnit  = '' % Physical unit of the wavelengths
-        Wavelength      = [] % Center wavelengths for each band
-        FWHM            = [] % FWHM's for each band
-        History         = {{'Object created'}} % Operation history for this cube
-        Version         = Cube.ClassVersion % Class version at the time of object creation
+        % DATA The contained datacube in [row, column, band] order. 
+        % Default: zeros(0,0,0)
+        Data = zeros(0,0,0)
+        
+        % FILES Full path(s) of the file(s) the cube data is from. This is
+        % initialized by file reader methods, and the lists are
+        % concatenated when two or more Cube objects are combined by some
+        % operation.
+        % Default: {} (empty cell array)
+        Files = {}
+        
+        % QUANTITY String description of the physical quantity of the data,
+        % for example 'Reflectance' or 'Radiance'. Used internally for
+        % automatic titling or labeling of plots and axes.
+        % Default 'Unknown'.
+        Quantity = '' % Default set by constructor
+        
+        % WAVELENGTHUNIT String description of the unit of the wavelength
+        % and FWHM metadata. Used internally for automatic axis labeling.
+        % Default: 'Band index' (if default Wavelength data is used)
+        %          'Unknown' (if Wavelength data is supplied without unit)
+        WavelengthUnit = '' % Default set by constructor
+        
+        % WAVELENGTH Center wavelengths for each band in the data as a 
+        % 1 x nBands vector. Used internally as an axis for visualizations.
+        % Default: 1:nBands
+        Wavelength = [] % Default set by constructor
+        
+        % FWMH Full Width at Half Maximum for each band in the data as a 
+        % 1 x nBands vector.
+        % Default: zeros(1,nBands)
+        FWHM            = [] % Default set by constructor
+        
+        % HISTORY Provenance information for the Cube.
+        % Each Cube method that returns a new Cube appends to the result
+        % history an entry (cell array) with a descriptive string of the 
+        % operation, a function handle to the method and the parameters 
+        % passed to it (with some exceptions to reduce needless data 
+        % duplication).
+        % Default: {{'Object created'}}
+        History = {{'Object created'}}
+        
+        % Version Internal version number of the class instance. 
+        % This is set at object creation time from the current class 
+        % definition, and used internally by the loadobj method to check 
+        % for version mismatches when loading saved Cube objects.
+        Version = Cube.ClassVersion
     end
     
     % Always recalculated from the data so they are in sync
