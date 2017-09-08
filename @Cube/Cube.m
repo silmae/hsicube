@@ -1,5 +1,5 @@
 classdef Cube
-    % Cube A class for hyperspectal datacubes.
+    % Cube A data class for manipulating hyperspectal datacubes.
     % The Cube class is a smart wrapper for handling hyperspectral
     % datacubes and associated metadata, such as wavelengths and fwhm
     % values.
