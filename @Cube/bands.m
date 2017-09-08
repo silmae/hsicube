@@ -1,11 +1,16 @@
 function [obj, idx] = bands(obj,b)
-%BANDS Band selection
-% bands(b) returns a cube with only the given bands.
+%BANDS Return a Cube with selected bands
+% Usage:
+% c2 = c1.BANDS(b) selects the bands from c1 specified by the vector b.
+%
 % Valid values for b are
-%   - A vector of integer values in the range 1:nBands. If an
-%     index is supplied multiple times, the result will contain
-%     copies of the given band.
+%   - A vector of integers in the range 1:nBands. The result will contain
+%     the specified bands in the given order. If an index is supplied
+%     multiple times, the result will contain copies of the given band.
 %   - A logical vector with length equal to nBands.
+% 
+% Wavelength and FWHM information will be carried over for the selected
+% bands.
 
 % Input validation
 assert(isvector(b), ...
