@@ -19,7 +19,7 @@ function [obj, counts, edges, h] = hist(obj, normalization, edges, visualize)
 %   visualize: Whether to display the counts using surf. Default true.
 
 % Reorganize the spectra to a 2d array
-tmp = squeeze(obj.byCols.Data);
+tmp = squeeze(obj.toList.Data);
 
 % By default, calculate simple counts for each band
 if nargin < 2 || isempty(normalization)

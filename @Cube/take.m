@@ -11,5 +11,5 @@ if n > obj.Area
 end
 
 obj.History = {{'Taking n first pixels', @take, n}};
-obj = obj.byCols.px([ones(n,1),(1:n)']);
+obj = obj.toList.px([ones(n,1),(1:n)']);
 end

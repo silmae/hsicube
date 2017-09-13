@@ -484,7 +484,7 @@ classdef Cube
         
         function obj = median(obj)
             %MEDIAN Returns the spatial median spectra.
-            obj.Data    = median(obj.byCols.Data,1);
+            obj.Data    = median(obj.toList.Data,1);
             obj.History = {{'Reduced to spatial median',@median}};
         end
 

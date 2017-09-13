@@ -12,9 +12,9 @@ function obj = mapSpectra(obj,f,varargin)
 % computing f, and if errors occur, the resulting data will be
 % lost.
 
-% The data will have a singleton width dimension after byCols,
+% The data will have a singleton width dimension after toList,
 % so we must deal with it by wrapping the given function.
 g = @(x) permute(shiftdim(f(reshape(x, [obj.Area, obj.nBands])), -1), [2 1 3]);
 
-obj = obj.byCols.map(g,varargin{:}).unCols(obj.Width, obj.Height);
+obj = obj.toList.map(g,varargin{:}).fromList(obj.Width, obj.Height);
 end

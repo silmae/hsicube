@@ -11,12 +11,12 @@ assert(obj.inBounds(cx), ...
     'Cube:CoordinateOutOfBounds', ...
     'Coordinates must be pairs of integers between [1, 1] and [%d,%d]',obj.Width,obj.Height);
 
-% Reshape using byCols so that the rows match spatial linear
+% Reshape using toList so that the rows match spatial linear
 % indexing. History is appended here first so that arguments of
 % px are sound for the cube before byCols.
 % Note the order of indexing.
 obj.History = {{'Selected pixels retained',@px,cx}};
 
 idx = sub2ind(obj.Size(1:2), cx(:,2), cx(:,1));
-obj.Data = obj.byCols.Data(idx, 1, :);
+obj.Data = obj.toList.Data(idx, 1, :);
 end
