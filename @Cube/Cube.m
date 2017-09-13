@@ -369,16 +369,11 @@ classdef Cube
             obj.History = {{'Repeated data', @repmat, ns}};
         end
         
-        function obj = byCols(obj)
-            %BYCOLS Concatenates the spatial pixel columns
-            % Concatenates the spatial dimensions columnwise, returning
-            % an Area x 1 x Bands cube
-            obj.Data    = reshape(obj.Data,[obj.Area,1,obj.nBands]);
-            obj.History = {{'Spatial columns stacked as list',@byCols}};
-        end
-        
-        % Reshape columnar data to an image. See unCols.m
-        [obj] = unCols(obj, W, H)
+        % Reshape the Cube into a list. See toList.m
+        [obj] = toList(obj)
+            
+        % Reshape a list of spectra to an rectangular image. See fromList.m
+        [obj] = fromList(obj, W, H)
             
         %% Slicing %%
     
