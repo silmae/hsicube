@@ -1,4 +1,4 @@
-classdef UnColsTest < matlab.unittest.TestCase
+classdef fromListTest < matlab.unittest.TestCase
     
     properties
         testCube
@@ -43,60 +43,60 @@ classdef UnColsTest < matlab.unittest.TestCase
     end
     
     methods (Test)
-        function unColsInvalidCubeError(testCase)
-            % unCols should error if the current Cube is not a list
+        function fromListInvalidCubeError(testCase)
+            % fromList should error if the current Cube is not a list
             % (width 1, height N).
-            % Test this by attempting to unCols twice on cubes with
+            % Test this by attempting to fromList twice on cubes with
             % width > 1
             testCase.assumeGreaterThan(testCase.w, 1);
-            c = testCase.testCube.unCols(testCase.w, testCase.h);
-            testCase.verifyError(@()c.unCols(testCase.w, testCase.h), 'Cube:NotAList');
+            c = testCase.testCube.fromList(testCase.w, testCase.h);
+            testCase.verifyError(@()c.fromList(testCase.w, testCase.h), 'Cube:NotAList');
         end
         
-        function unColsInvalidAreaError(testCase)
-            % unCols should error if the new area does not match the number
+        function fromListInvalidAreaError(testCase)
+            % fromList should error if the new area does not match the number
             % of pixels in the Cube
             c = testCase.testCube;
             goodw= testCase.w;
             goodh = testCase.h;
-            testCase.verifyError(@()c.unCols(goodw-1, goodh), 'Cube:InvalidArea');
-            testCase.verifyError(@()c.unCols(goodw, goodh-1), 'Cube:InvalidArea');
-            testCase.verifyError(@()c.unCols(goodw-1, goodh-1), 'Cube:InvalidArea');
-            testCase.verifyError(@()c.unCols(goodw+1, goodh), 'Cube:InvalidArea');
-            testCase.verifyError(@()c.unCols(goodw, goodh+1), 'Cube:InvalidArea');
-            testCase.verifyError(@()c.unCols(goodw+1, goodh+1), 'Cube:InvalidArea');
-            testCase.verifyError(@()c.unCols(0, goodh), 'Cube:InvalidArea');
-            testCase.verifyError(@()c.unCols(goodw, 0), 'Cube:InvalidArea');
-            testCase.verifyError(@()c.unCols(-1, goodh), 'Cube:InvalidArea');
-            testCase.verifyError(@()c.unCols(goodw, -1), 'Cube:InvalidArea');
+            testCase.verifyError(@()c.fromList(goodw-1, goodh), 'Cube:InvalidArea');
+            testCase.verifyError(@()c.fromList(goodw, goodh-1), 'Cube:InvalidArea');
+            testCase.verifyError(@()c.fromList(goodw-1, goodh-1), 'Cube:InvalidArea');
+            testCase.verifyError(@()c.fromList(goodw+1, goodh), 'Cube:InvalidArea');
+            testCase.verifyError(@()c.fromList(goodw, goodh+1), 'Cube:InvalidArea');
+            testCase.verifyError(@()c.fromList(goodw+1, goodh+1), 'Cube:InvalidArea');
+            testCase.verifyError(@()c.fromList(0, goodh), 'Cube:InvalidArea');
+            testCase.verifyError(@()c.fromList(goodw, 0), 'Cube:InvalidArea');
+            testCase.verifyError(@()c.fromList(-1, goodh), 'Cube:InvalidArea');
+            testCase.verifyError(@()c.fromList(goodw, -1), 'Cube:InvalidArea');
         end
         
-        function unColsResultWidth(testCase)
-            % Width should be the given one after unCols
+        function fromListResultWidth(testCase)
+            % Width should be the given one after fromList
             c = testCase.testCube;
-            d = c.unCols(testCase.w, testCase.h);
+            d = c.fromList(testCase.w, testCase.h);
             testCase.verifyEqual(d.Width, testCase.w);
         end
         
-        function unColsResultHeight(testCase)
-            % Height should be the given one after unCols
+        function fromListResultHeight(testCase)
+            % Height should be the given one after fromList
             c = testCase.testCube;
-            d = c.unCols(testCase.w, testCase.h);
+            d = c.fromList(testCase.w, testCase.h);
             testCase.verifyEqual(d.Height, testCase.h);
         end
         
-        function unColsPreservesBands(testCase)
+        function fromListPreservesBands(testCase)
             % Number of bands should not change
             c = testCase.testCube;
             nb = c.nBands;
-            cube = testCase.testCube.unCols(testCase.w, testCase.h);
+            cube = testCase.testCube.fromList(testCase.w, testCase.h);
             testCase.verifyEqual(cube.nBands, nb);
         end
         
-        function unColsByColsInverse(testCase)
-            % unCols should be an inverse of byCols
+        function fromListtoListInverse(testCase)
+            % fromList should be an inverse of toList
             orig = testCase.testCube.Data;
-            new  = testCase.testCube.unCols(testCase.w, testCase.h).byCols.Data;
+            new  = testCase.testCube.fromList(testCase.w, testCase.h).toList.Data;
             testCase.verifyEqual(new, orig);
         end
     end

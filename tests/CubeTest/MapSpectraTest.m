@@ -66,12 +66,12 @@ classdef MapSpectraTest < matlab.unittest.TestCase
             testCase.verifyEqual(new.Height, orig.Height, 'Height changed');
         end
         
-        function byColsCommutation(testCase, fs)
-            % mapSpectra and byCols should commute
+        function toListCommutation(testCase, fs)
+            % mapSpectra and toList should commute
             orig = testCase.testCube; 
             
-            first = orig.mapSpectra(fs).byCols;
-            second = orig.byCols.mapSpectra(fs);
+            first = orig.mapSpectra(fs).toList;
+            second = orig.toList.mapSpectra(fs);
             
             testCase.verifyEqual(first.Data, second.Data);
         end

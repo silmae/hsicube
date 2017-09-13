@@ -67,7 +67,7 @@ classdef HistTest < matlab.unittest.TestCase
             % gives for the whole data
             c = testCase.testCube;
             [~, ~, defaults] = c.hist;
-            [~, expected] = histcounts(squeeze(c.byCols.Data));
+            [~, expected] = histcounts(squeeze(c.toList.Data));
             testCase.verifyEqual(defaults, expected);
         end
         

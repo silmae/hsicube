@@ -1,4 +1,4 @@
-classdef ByColsTest < matlab.unittest.TestCase
+classdef toListTest < matlab.unittest.TestCase
     
     properties
         testCube
@@ -38,39 +38,39 @@ classdef ByColsTest < matlab.unittest.TestCase
     
     methods (Test)
         
-        function byColsResultWidth(testCase)
-            % Width should be 1 after byCols
-            cols = testCase.testCube.byCols;
+        function toListResultWidth(testCase)
+            % Width should be 1 after toList
+            cols = testCase.testCube.toList;
             testCase.verifyEqual(cols.Width, 1);
         end
         
-        function byColsResultHeight(testCase)
+        function toListResultHeight(testCase)
             % Height should equal the original area
             area = testCase.testCube.Area;
-            cols = testCase.testCube.byCols;
+            cols = testCase.testCube.toList;
             testCase.verifyEqual(cols.Height, area);
         end
         
-        function byColsPreservesBands(testCase)
+        function toListPreservesBands(testCase)
             % Number of bands should not change
             nb   = testCase.testCube.nBands;
-            cols = testCase.testCube.byCols;
+            cols = testCase.testCube.toList;
             testCase.verifyEqual(cols.nBands, nb);
         end
         
-        function byColsIdempotent(testCase)
-            % byCols twice should equal byCols once
-           once  = testCase.testCube.byCols.Data;
-           twice = testCase.testCube.byCols.byCols.Data;
+        function toListIdempotent(testCase)
+            % toList twice should equal toList once
+           once  = testCase.testCube.toList.Data;
+           twice = testCase.testCube.toList.toList.Data;
            testCase.verifyEqual(twice, once);
         end
         
-        function byColsUnColsInverse(testCase)
-            % unCols should be an inverse of byCols
+        function toListfromListInverse(testCase)
+            % fromList should be an inverse of toList
             orig = testCase.testCube.Data;
             w = testCase.testCube.Width;
             h = testCase.testCube.Height;
-            new  = testCase.testCube.byCols.unCols(w, h).Data;
+            new  = testCase.testCube.toList.fromList(w, h).Data;
             testCase.verifyEqual(new, orig);
         end
     end
