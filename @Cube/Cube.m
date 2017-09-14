@@ -357,10 +357,15 @@ classdef Cube
         end
         
         function obj = repmat(obj, ns)
-            %REPMAT Repeat the data along a dimension
-            % REPMAT([ny, nx, nb]) repeats the object data along each axis
-            % the specified number of times. Metadata along
-            % the wavelength dimension is repeated respectively.
+            %REPMAT Repeat the data along each dimension
+            % c2 = REPMAT(c1, [ny, nx, nb]) repeats the cube c1 along each 
+            % axis (height, width, bands respectively) the specified number
+            % of times. Metadata will be repeated similarly if necessary
+            % (i.e. nb > 1).
+            % Replication factors for all dimensions must be specified or
+            % an error will be thrown.
+            % 
+            % See also: REPMAT
             assert(isequal(size(ns), [1,3]), 'Cube:InvalidNs', 'You must specify replication factors for all dimensions ([ny, nx, nb])');
             
             obj.Data = repmat(obj.Data, ns);
