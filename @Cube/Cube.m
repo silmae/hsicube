@@ -49,7 +49,7 @@ classdef Cube
         % FWMH Full Width at Half Maximum for each band in the data.
         % 1 x nBands numerical vector.
         % Default: zeros(1,nBands)
-        FWHM            = [] % Default set by constructor
+        FWHM = [] % Default set by constructor
         
         % HISTORY Provenance information for the Cube.
         % Each Cube method that returns a new Cube appends to the result
