@@ -14,8 +14,8 @@ This package contains the following components:
 ## Usage
 Adding this directory to your MATLAB path will bring the main classes into scope. If you wish to handle ENVI files, make sure you have [ENVI file reader / writer][envi] in path as well. For nice color maps in visualizations, you can add [Brewermap][colorbrewer] to your path and it will be used automatically.
 
-[envi](http://se.mathworks.com/matlabcentral/fileexchange/27172-envi-file-reader-writer)
-[colorbrewer](https://github.com/DrosteEffect/BrewerMap)
+[envi]: http://se.mathworks.com/matlabcentral/fileexchange/27172-envi-file-reader-writer
+[colorbrewer]: https://github.com/DrosteEffect/BrewerMap
 
 Use `doc Cube` to view the basic feature list and documentation of the main class. To get started, you can also create a Cube with some data and start playing around:
 
