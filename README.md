@@ -12,16 +12,19 @@ This package contains the following components:
   - [Unit tests](tests/) for the above components
 
 ## Usage
-Adding this directory to your MATLAB path will bring the main classes into scope. If you wish to handle ENVI files, make sure you have the ENVI file reader / writer in path as well.
+Adding this directory to your MATLAB path will bring the main classes into scope. If you wish to handle ENVI files, make sure you have [ENVI file reader / writer][envi] in path as well. For nice color maps in visualizations, you can add [Brewermap][colorbrewer] to your path and it will be used automatically.
 
-Documentation is still under construction. Try creating a Cube object and see what you can do with it:
+[envi](http://se.mathworks.com/matlabcentral/fileexchange/27172-envi-file-reader-writer)
+[colorbrewer](https://github.com/DrosteEffect/BrewerMap)
 
+Use `doc Cube` to view the basic feature list and documentation of the main class. To get started, you can also create a Cube with some data and start playing around:
+
+```matlab
+arr = rand(32,32,256);
+c = Cube(arr, 'quantity', 'Random data', 'wl', rand(1,256), 'wlu', 'arbitrary')
 ```
-arr = rand(10, 10, 100);
-myfirstcube = Cube(arr);
-```
 
-You can also see the [Cube](tests/Cube/) or [ENVI tests](tests/ENVI/) for some use cases.
+You can also see the [Cube](tests/CubeTest/) or [ENVI test files](tests/ENVITest/) for some use behaviors of the different methods.
 
 ## Author
 
