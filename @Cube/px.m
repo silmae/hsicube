@@ -13,7 +13,7 @@ assert(obj.inBounds(cx), ...
 
 % Reshape using toList so that the rows match spatial linear
 % indexing. History is appended here first so that arguments of
-% px are sound for the cube before byCols.
+% px are sound for the cube before toList.
 % Note the order of indexing.
 obj.History = {{'Selected pixels retained',@px,cx}};
 

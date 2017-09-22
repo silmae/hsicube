@@ -15,7 +15,7 @@ if obj.Area > 50
     warning('Asked to show %d pixel spectra, reducing to the first 50.',obj.Area);
     obj = obj.take(50);
 else
-    obj = obj.byCols;
+    obj = obj.toList;
 end
 
 % If not given an existing figure handle, creates a new one.
