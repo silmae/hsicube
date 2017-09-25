@@ -7,8 +7,10 @@
 % quantity (without it, ENVI.read() will set the default 'Unknown').
 
 envifile = 'example.dat';
-cube = ENVI.read(envifile, 'Radiance')
+example = ENVI.read(envifile, 'Radiance');
+disp(example);
 
+%%
 % We see from the output that the metadata in the matching ENVI header file
 % (example.hdr) was automatically read to the Cube object properties 
 % Wavelength and FWHM, and the quantity was set to 'Radiance'.
@@ -17,11 +19,14 @@ cube = ENVI.read(envifile, 'Radiance')
 % Writing Cube data to ENVI files is done simply using the ENVI.write()
 % method:
 
-newcube = Cube(rand(32,32,256));
-filename = 'random_envi';
-ENVI.write(newcube, filename);
+try
+    ENVI.write(example, 'example');
+catch e
+    disp(e.message)
+end
 
-% This saves the data to 'random_envi.dat' and writes the metadata to
-% 'random_envi.hdr'. The default is to not overwrite any existing files 
-% (neither .dat nor .hdr). This can be overridden by calling
-% ENVI.write(cube, filename, 'overwrite').
+%%
+% This attempts to save the data to 'random_envi.dat' and write the 
+% metadata to 'random_envi.hdr'. The default is to not overwrite any 
+% existing files (neither .dat nor .hdr), which results in an exception.
+% This can be overridden by calling ENVI.write(cube, filename, 'overwrite').
