@@ -30,3 +30,15 @@ example.bands(example.Wavelength < 550)
 % Note here the use of the properties Bands and Wavelengths. The first
 % always contains the band indices of the Cube, while the latter contains
 % the wavelength information for each bands.
+
+%% Selection by coordinates
+% Selecting spectra by their pixel coordinates is possible using px(). This
+% returns the selected pixel spectra as a Cube containing a list 
+% (N x bands matrix):
+
+corners = [1,  1; % Top left
+           64, 1; % Top right
+           1, 64; % Bottom left
+           64,64; % Bottom right
+           ];
+example.px(corners).plot()
