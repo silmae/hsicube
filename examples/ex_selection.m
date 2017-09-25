@@ -6,6 +6,7 @@
 % data cube. We first load up 
 
 example = ENVI.read('example.dat');
+orig_range = example.Wavelength([1,end]);
 disp(example);
 
 %% Selecting bands
@@ -13,18 +14,23 @@ disp(example);
 % 
 % * By passing explicit indices as vectors:
 
-example.bands(1:5)
+example.bands(1:5).plot();
+xlim(orig_range)
+
 %%
 
-example.bands([5,6,8])
+example.bands([1,16,32]).plot();
+xlim(orig_range)
 
 %%
 % * By passing a logical matrix:
 
-example.bands(example.Bands < 41)
+example.bands(example.Bands > 16).plot();
+xlim(orig_range)
 %% 
 
-example.bands(example.Wavelength < 550)
+example.bands(example.Wavelength < 550).plot();
+xlim(orig_range)
 
 %% 
 % Note here the use of the properties Bands and Wavelengths. The first
@@ -41,4 +47,4 @@ corners = [1,  1; % Top left
            1, 64; % Bottom left
            64,64; % Bottom right
            ];
-example.px(corners).plot()
+example.px(corners).plot();
