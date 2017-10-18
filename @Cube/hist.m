@@ -83,7 +83,7 @@ if visualize
         
         % Set labeling
         title([normalization, ' for each band and value']);
-        xlabel(obj.WavelengthUnit);
+        xlabel(['Wavelength',' (',obj.WavelengthUnit,')']);
         ylabel(obj.Quantity);
     end
     
