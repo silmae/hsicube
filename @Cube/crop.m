@@ -1,10 +1,18 @@
 function [obj, tl, br] = crop(obj,tl,br)
 %CROP Spatial crop
-% CROP([tlx, tly],[brx, bry]) crops the cube spatially to a
-%     rectangle defined by top left corner [tlx, tly] and
-%     bottom right corner [brx, bty]. The cropped image includes both
-%     corner points.
+% Usage:
+% CROP([tlx, tly, w, h]) or
+% CROP([tlx, tly],[brx, bry]) 
+% crops the cube spatially to a rectangle defined by top left corner
+% [tlx, tly] and the bottom right corner [brx, bty] (or [tlx + w, tly + h] 
+% if only a single vector was supplied. Both corners are included.
 
+% If only a single vector is supplied, use it as if it was [x, y, w, h]
+if nargin == 2 && numel(tl) == 4
+   br = [tl(1) + tl(3), tl(2) + tl(4)];
+   tl = tl(1:2);
+end 
+    
 assert(isequal(size(tl), [1,2]) && isequal(size(br), [1,2]), ...
     'Cube:InvalidCoordinateSize',...
     'Corner coordinates must be supplied as 1x2 matrices [x,y]');

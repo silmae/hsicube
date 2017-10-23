@@ -38,14 +38,33 @@ classdef CropTest < matlab.unittest.TestCase
     
     methods (Test)
         
-        function cxSize(testCase)
-            % Both corner coordinates must be 1 x 2 matrices, else error
+        function cxParams(testCase)
+            % crop should accept either a position vector or two corner
+            % positions with identical results
             c = testCase.testCube;
             
+            % Not testable on single-pixel data
+            testCase.assumeGreaterThan(c.Width, 1);
+            testCase.assumeGreaterThan(c.Height, 1);
+            
+            pos = [1,1,1,1];
+            tl = [1,1]; 
+            br = [2,2];
+            testCase.verifyEqual(c.crop(pos).Data, c.crop(tl, br).Data);
+        end
+        
+        function cxSize(testCase)
+            % crop should error if not supplied with a single position
+            % vector [x,y,w,h] or two corner positions [x,y], [x,y]
+            c = testCase.testCube;
+            
+            testCase.verifyError(@()c.crop([1,1,1]), 'Cube:InvalidCoordinateSize');
+            testCase.verifyError(@()c.crop([1,1,1,1,1]), 'Cube:InvalidCoordinateSize');
             testCase.verifyError(@()c.crop(1,[1,1]), 'Cube:InvalidCoordinateSize');
             testCase.verifyError(@()c.crop([1,1],1), 'Cube:InvalidCoordinateSize');
             testCase.verifyError(@()c.crop([1,1,1],[1,1]), 'Cube:InvalidCoordinateSize');
             testCase.verifyError(@()c.crop([1,1],[1,1,1]), 'Cube:InvalidCoordinateSize');
+
         end
         
         function unnaturalCx(testCase)
