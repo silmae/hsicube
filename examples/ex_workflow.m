@@ -22,16 +22,26 @@ wr.plot();
 
 %%
 % Now lets use the reference to calculate an approximate reflectance cube.
-% The only thing we need to take care of is replicating the spectra to
-% match the dimensions, since Cube tries to avoid mistakes by disabling
-% automatic replication.
+% We need to take care of a few things here:
+% 
+% - MATLAB does not deal well with integer data, so we must cast the data
+%   to double (this was done automatically for us in the mean calculation).
+% - The reference must be replicated explicitly, since Cube tries to prevent 
+%   mistakes by disabling automatic replication. 
+%   Note that to match APIs with the default, the Cube repmat uses the order
+%   [height, width, bands] for the dimensions. 
 
-refl = house ./ wr.repmat([house.Width, house.Height, 1]);
+
+% We use mapBands with a cast function to change the type
+toDouble = @(x) double(x);
+refl = house.mapBands(toDouble) ./ wr.repmat([house.Height, house.Width, 1]);
 refl.im(1);
 
 %% 
 % Doing the elementwise division loses us the nice quantity information,
 % since Cube does not automatically deduce it. We can avoid this by calling
 % rdivide with an additional parameter:
-refl = rdivide(house, wr.repmat([house.Width, house.Height, 1]), 'Reflectance');
-refl.Quantity
+refl = rdivide(house.mapBands(toDouble), ...
+               wr.repmat([house.Height, house.Width, 1]), ...
+               'Reflectance');
+refl.im(1);
