@@ -5,7 +5,7 @@
 
 house = ENVI.read('house_uint16_rad.dat', 'Radiance');
 
-%% HSI histograms
+%% Multiband image histograms
 % The hist() method calculates histograms for each band in the data using
 % MATLAB histcounts, and displays them as a image with a colormap.
 
@@ -18,3 +18,30 @@ house.hist('count');
 
 bin_edges = 0:65536;
 house.hist('count', bin_edges);
+
+%% Displaying single bands
+% Single bands can be displayed by calling im(band_idx). The method will
+% return the plotted data, and a handle to the image object, which lets us
+% keep plotting in the same figure:
+
+[~, im_h] = house.im(1);
+
+% Lets select some points of interest:
+xy  = [15,75;...
+       15,85;...
+       25,45];
+hold on;
+scatter(im_h.Parent, xy(:,1), xy(:,2), 'r', 'filled');
+
+%% Plotting spectra
+% Plotting can be done using the plot() method. We shall plot the spectra
+% from the previously selected points with a suitable legend. Note that
+% the coordinates used are the same as used for the scatter plot in the
+% image coordinates (x, then y).
+% The plot() method returns us the plotted data as a cube and an axis
+% handle.
+
+xy_legend = {'Wall', 'Window', 'Tree'};
+[S, ax] = house.px(xy).plot();
+legend(ax, xy_legend);
+
