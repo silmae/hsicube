@@ -1,41 +1,37 @@
 %% Data selection
-
-%%
 % The Cube class does not directly implement the normal MATLAB slicing
 % syntax. Instead, multiple methods are provided for selecting parts of a
-% data cube. We first load up 
+% data cube. We first load up some example data, and retrieve the
+% wavelength range to synchronize the visualizations.
 
-example = ENVI.read('example.dat');
-orig_range = example.Wavelength([1,end]);
-disp(example);
+house = ENVI.read('house_uint16_rad.dat');
+orig_range = house.Wavelength([1,end]);
+disp(house);
 
 %% Selecting bands
-% Selecting bands can be done using the methods bands() in two ways:
+% Selecting bands can be done using the methods bands() in two ways. We 
 % 
 % * By passing explicit indices as vectors:
 
-example.bands(1:5).plot();
+house.bands(32:64).plot();
 xlim(orig_range)
 
 %%
 
-example.bands([1,16,32]).plot();
+house.bands([1,64,128]).plot();
 xlim(orig_range)
 
 %%
 % * By passing a logical matrix:
 
-example.bands(example.Bands > 16).plot();
+house.bands(house.Bands > 64).plot();
 xlim(orig_range)
 %% 
-
-example.bands(example.Wavelength < 550).plot();
+% This can easily be used with the synchronized wavelength metadata to
+% slice by wavelengths:
+house.bands(house.Wavelength < 550).plot();
 xlim(orig_range)
 
-%% 
-% Note here the use of the properties Bands and Wavelengths. The first
-% always contains the band indices of the Cube, while the latter contains
-% the wavelength information for each bands.
 
 %% Selection by coordinates
 % Selecting spectra by their pixel coordinates is possible using px(). This
@@ -47,4 +43,4 @@ corners = [1,  1; % Top left
            1, 64; % Bottom left
            64,64; % Bottom right
            ];
-example.px(corners).plot();
+house.px(corners).plot();
