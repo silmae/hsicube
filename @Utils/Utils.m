@@ -7,5 +7,8 @@ classdef Utils
         
         % True for integers > 0
         [bool] = isnatural(a)
+        
+        % Interpolator for CIE CMF functions
+        [XYZ] = CIE_XYZ(wavelengths)
     end
 end
