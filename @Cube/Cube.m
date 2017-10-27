@@ -468,7 +468,7 @@ classdef Cube
         obj = mapSpectra(obj, f, varargin)
         
         % Apply function on each layer (band). See mapBands.m
-        obj = mapBands(obj, f, qty)
+        obj = mapBands(obj, f, qty, res_band_multiplier)
         
         %% Reductions %%
         
