@@ -50,13 +50,13 @@ if visualize
     
     if obj.nBands == 1
         % For a single band, just plot the histogram
-        h = histogram('BinEdges', edges, 'BinCounts', counts);
+        h = histogram(counts, edges);
         title([normalization, ' of pixels per value']);
         xlabel(obj.Quantity);
         ylabel(normalization);
     elseif obj.Area == 1
         % Similarly for a single pixel, but with different labels
-        h = histogram('BinEdges', edges, 'BinCounts', counts);
+        h = histogram(counts, edges);
         title([normalization, ' of bands per value']);
         xlabel(obj.Quantity);
         ylabel(normalization);
