@@ -37,22 +37,24 @@ If you wish to delve deeper, most of the code should be well commented. You can 
 ## Citing
 If you use this package for scientific work, you can cite the following conference paper:
 
-> Software Framework For Hyperspectral Data Exploration and Processing in MATLAB
-> M. A. Eskelinen
-> Int. Arch. Photogramm. Remote Sens. Spatial Inf. Sci., XLII-3-W3, 47-50, https://doi.org/10.5194/isprs-archives-XLII-3-W3-47-2017, 2017
+> Software Framework For Hyperspectral Data Exploration and Processing in MATLAB<br />
+> M. A. Eskelinen<br />
+> Int. Arch. Photogramm. Remote Sens. Spatial Inf. Sci., XLII-3-W3, 47-50, https://doi.org/10.5194/isprs-archives-XLII-3-W3-47-2017, 2017<br />
 
-or in BibTeX format:
+Or in BibTeX format:
  
-> @Article{isprs-archives-XLII-3-W3-47-2017,
-> AUTHOR = {Eskelinen, M. A.},
-> TITLE = {SOFTWARE FRAMEWORK FOR HYPERSPECTRAL DATA EXPLORATION AND PROCESSING IN MATLAB},
-> JOURNAL = {ISPRS - International Archives of the Photogrammetry, Remote Sensing and Spatial Information Sciences},
-> VOLUME = {XLII-3/W3},
-> YEAR = {2017},
-> PAGES = {47--50},
-> URL = {https://www.int-arch-photogramm-remote-sens-spatial-inf-sci.net/XLII-3-W3/47/2017/},
-> DOI = {10.5194/isprs-archives-XLII-3-W3-47-2017}
+> @Article{isprs-archives-XLII-3-W3-47-2017,<br />
+> AUTHOR = {Eskelinen, M. A.},<br />
+> TITLE = {SOFTWARE FRAMEWORK FOR HYPERSPECTRAL DATA EXPLORATION AND PROCESSING IN MATLAB},<br />
+> JOURNAL = {ISPRS - International Archives of the Photogrammetry, Remote Sensing and Spatial Information Sciences},<br />
+> VOLUME = {XLII-3/W3},<br />
+> YEAR = {2017},<br />
+> PAGES = {47--50},<br />
+> URL = {https://www.int-arch-photogramm-remote-sens-spatial-inf-sci.net/XLII-3-W3/47/2017/},<br />
+> DOI = {10.5194/isprs-archives-XLII-3-W3-47-2017}<br />
 > }
+
+For referring to specific versions, you can look for the corresponding version on [Zenodo](https://zenodo.org/search?q=hsicube).
 
 ## Author
 2017 Matti A. Eskelinen, University of Jyväskylä, Finland
