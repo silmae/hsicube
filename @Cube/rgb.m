@@ -7,10 +7,10 @@ function [obj,im] = rgb(obj,b)
 %   For other values of WavelengthUnit, it will error unless the cube has
 %   exactly 3 bands, in which case it will attempt to display them.
 %   In either case, rgb normalizes the data by clipping the values to the
-%   interval [0, 1] and applies gamma correction with a 1/2 factor.
+%   interval [0, 1] and applies gamma correction with a 1/2.2 factor.
 % [cube, im] = cube.rgb([r,g,b]) displays the given band indices r, g, and b
 %   as R, G and B layers, applying normalization and gamma correction.
-% 
+%
 if nargin < 2 && obj.nBands ~= 3
     if strcmp(obj.WavelengthUnit, 'nm')
         % Use the CIE CMF to calculate the XYZ coords, then sRGB colors using
@@ -37,7 +37,7 @@ else
 end
 
 % Normalize the image and apply gamma correction
-obj = obj.mapBands(@(x) min(max(x,0),1).^0.5, 'Normalized sRGB');
+obj = obj.mapBands(@(x) min(max(x,0),1).^(1/2.2), 'Normalized sRGB');
 h = figure();
 im = image(obj.Data);
 axis image;
