@@ -9,11 +9,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - This CHANGELOG file
 - Tons of documentation and comments
+- Example gallery
 - Ton of test cases and a script for running the suite
 - Many input parameter checks
 - Parameter for mapBands to allow multidimensional return values
 - Cropping can be now done also with a single parameter
-- slice() method for opening `im_cube_slicer`
+- `slice()` method for opening `im_cube_slicer`
+- `rgb()` method can now calculate a RGB for VIS wavelengths
 
 ### Changed
 - byCols/unCols renamed to toList/fromList respectively
