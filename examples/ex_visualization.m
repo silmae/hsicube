@@ -24,7 +24,7 @@ house.hist('count', bin_edges);
 % return the plotted data, and a handle to the image object, which lets us
 % keep plotting in the same figure:
 
-[~, im_h] = house.im(1);
+[~, im_h] = house.im(64);
 
 % Lets select some points of interest:
 xy  = [15,75;...
@@ -45,3 +45,11 @@ xy_legend = {'Wall', 'Window', 'Tree'};
 [S, ax] = house.px(xy).plot();
 legend(ax, xy_legend);
 
+%% RGB image calculation
+% The rgb() method can be used to calculate and display an sRGB
+% representation of calibrated radiance data in the visible range (or to
+% produce false-color images by giving it band indices).
+% Since the house datacube is originally valid radiance data, we
+% can try this by just reconverting it back to the original units, and then
+% giving the rgb() method a try:
+house.mapBands(@(x) double(x) * (0.001190876864732/65535), 'Radiance').rgb();
