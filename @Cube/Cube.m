@@ -12,7 +12,7 @@ classdef Cube
     % the private Version property should reveal version changes from
     % object creation.
     properties (Constant, Hidden)
-        ClassVersion = '0.9.0-dev' % Current version of the class source
+        ClassVersion = '0.9.0' % Current version of the class source
     end
     
     properties (SetAccess = 'private')
