@@ -14,8 +14,11 @@ This package contains the following components:
 
 ## Usage
 1. Clone the repository:
+
    `git clone git@github.com:maaleske/hsicube.git`
+
 2. Add this directory to your MATLAB path to bring the main classes into scope: 
+
    `addpath('hsicube')`
 
 Additional functionality:
@@ -35,20 +38,31 @@ If you wish to delve deeper, most of the code should be well commented. You can 
 If you use this package for scientific work, you can cite the following conference paper:
 
 > Software Framework For Hyperspectral Data Exploration and Processing in MATLAB
+>
 > M. A. Eskelinen
+>
 > Int. Arch. Photogramm. Remote Sens. Spatial Inf. Sci., XLII-3-W3, 47-50, https://doi.org/10.5194/isprs-archives-XLII-3-W3-47-2017, 2017
 
 or in BibTeX format:
  
 >@Article{isprs-archives-XLII-3-W3-47-2017,
+>
 >AUTHOR = {Eskelinen, M. A.},
+>
 >TITLE = {SOFTWARE FRAMEWORK FOR HYPERSPECTRAL DATA EXPLORATION AND PROCESSING IN MATLAB},
+>
 >JOURNAL = {ISPRS - International Archives of the Photogrammetry, Remote Sensing and Spatial Information Sciences},
+>
 >VOLUME = {XLII-3/W3},
+>
 >YEAR = {2017},
+>
 >PAGES = {47--50},
+>
 >URL = {https://www.int-arch-photogramm-remote-sens-spatial-inf-sci.net/XLII-3-W3/47/2017/},
+>
 >DOI = {10.5194/isprs-archives-XLII-3-W3-47-2017}
+>
 >}
 
 ## Author
