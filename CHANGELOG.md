@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.9.0] - 2017-10-30
 ### Added
 - This CHANGELOG file
 - Tons of documentation and comments
@@ -30,4 +31,5 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Misleading "Normalized" property
 - `show()` method for autoselecting visualizations
 
-[Unreleased]: https://github.com/maaleske/hsicube/compare/v0.8.0...HEAD
+[Unreleased]: https://github.com/maaleske/hsicube/compare/v0.9.0...HEAD
+[0.9.0]: https://github.com/maaleske/hsicube/compare/v0.8.0...v0.9.0
