@@ -26,6 +26,13 @@ c = Cube(arr, 'quantity', 'Random data', 'wl', rand(1,256), 'wlu', 'arbitrary')
 
 You can also see the [Cube](tests/CubeTest/) or [ENVI test files](tests/ENVITest/) for some use behaviors of the different methods.
 
+## Citing
+If you use this package for scientific work, you can cite the following conference paper:
+
+> Software Framework For Hyperspectral Data Exploration and Processing in MATLAB
+> M. A. Eskelinen
+> Int. Arch. Photogramm. Remote Sens. Spatial Inf. Sci., XLII-3-W3, 47-50, https://doi.org/10.5194/isprs-archives-XLII-3-W3-47-2017, 2017
+
 ## Author
 
 Matti A. Eskelinen, University of Jyväskylä, Finland
