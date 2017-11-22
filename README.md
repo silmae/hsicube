@@ -15,7 +15,7 @@ This package contains the following components:
 ## Usage
 1. Clone the repository:
 
-   `git clone git@github.com:maaleske/hsicube.git`
+   `git clone git@github.com:silmae/hsicube.git`
 
 2. Add this directory to your MATLAB path to bring the main classes into scope: 
 
