@@ -321,6 +321,9 @@ classdef Cube
         % See hist.m
         [obj, counts, edges, h] = hist(obj, normalization, edges, visualize)
         
+        % See threshold_on_band.m
+        [th_im] = threshold_on_band(obj, band, th_frac)
+        
         % Plot pixel spectra. See plot.m
         [obj, ax] = plot(obj,h)
         
