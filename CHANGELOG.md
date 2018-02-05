@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - Thresholding using quantile selection
 - Rudimentary serialization to and from NetCDF
+- std() and var() for calculating spatial standard deviation and variance in each band
 
 ### Removed
 - MATLAB file serialization (too fragile with objects)

@@ -472,12 +472,18 @@ classdef Cube
         
         % Apply function on each layer (band). See mapBands.m
         obj = mapBands(obj, f, qty, res_band_multiplier)
-        
+
         %% Reductions %%
         
         % Spatial mean. See mean.m
         obj = mean(obj, flag1, flag2)
         
+        % Spatial variance. See var.m
+        obj = var(obj, w, nanflag);
+
+        % Spatial standard deviation. See std.m
+        obj = std(obj, w, nanflag);
+
         function obj = colMean(obj)
             %COLMEAN Returns the spatial mean spectra for each column.
             obj.Data    = mean(obj.Data,1);
