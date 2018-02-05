@@ -540,64 +540,8 @@ classdef Cube
                 mat2str(a.Size), mat2str(b.Size));
         end
         
-        %% Object saving and loading 
-        
-        function saveToFile(obj, filename, overwrite)
-            %SAVETOFILE Save cube(s) to a file
-            % Cube.saveToFile(cube, filename) saves the given cube or cube
-            % array, and possibly generates a filename.
-            % If the filename is a directory, 
-            % If the given filename does not have
-            % an extension, appends '.cb'.
-            % Unless the optional parameter overwrite is given and true, 
-            % throws an error if the file already exists.
-            if nargin < 3
-                overwrite = false;
-            end
-            
-            % Sanity checks
-            assert(isa(obj,'Cube'), 'First parameter invalid, expected a valid Cube object or array.');
-            assert(ischar(filename) && ~isempty(filename), 'Second parameter was invalid, expected a filename (non-empty string)');
-            assert(islogical(overwrite), 'Overwrite parameter must be a logical value.');
-            
-            % Append '.cb' when no file extension was given
-            [dir, fname, ext] = fileparts(filename);
-            if strcmp(ext,'')
-                fname = [fname,'.cb'];
-            else
-                fname = [fname,ext];
-            end
-            savefile = fullfile(dir,fname);
-            
-            % Check whether we are overwriting and act appropriately
-            assert( ~exist(savefile,'file') || overwrite, ...
-                'File already exists. If you want to overwrite, give true as the third parameter.');
-            
-            % Save the file and print some nice output
-            CUBEDATA = obj;
-            n = length(CUBEDATA);
-            fprintf('Saving %d Cube(s) to %s\n', n, savefile);
-            
-            % For files over 2GB in size, only version 7.3 of the MAT
-            % format is available. If it is not specified, save fails but
-            % only with a warning. Since we can't know the file size
-            % beforehand, default to version 7.3 always.
-            save(savefile,'CUBEDATA','-mat','-v7.3');
-            fprintf('Saved. File contents:\n');
-            whos('-file', savefile);
-        end
-        
-        function obj = loadFromFile(filename)
-            %LOADFROMFILE Load saved cube(s)
-            % C = loadFromFile(filename) attempts to read the filename,
-            % which be a valid MAT file containing the variable CUBEDATA.
-            % Display some output when starting and finishing loading
-            fprintf('Loading Cube data from %s\n', filename);
-            S = load(filename,'-mat','CUBEDATA');
-            fprintf('Loaded %d Cube(s).\n',length(S.CUBEDATA));
-            obj = S.CUBEDATA;
-        end
-        
+        %% Object saving and loading
+
         function obj = loadobj(s)
             %LOADOBJ Check the version of the saved class before loading
             % In case the saved version does not match the current version

@@ -28,6 +28,7 @@ end
 
     
 suite = TestSuite.fromFolder(fullfile(testdir, 'CubeTest'));
+suite = [suite, TestSuite.fromFolder(fullfile(testdir, 'NetCDFTest'))];
 
 if hasENVI
     suite = [suite, TestSuite.fromFolder(fullfile(testdir, 'ENVITest'))];

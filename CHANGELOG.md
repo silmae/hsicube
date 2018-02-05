@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 - Thresholding using quantile selection
+- Rudimentary serialization to and from NetCDF
+
+### Removed
+- MATLAB file serialization (too fragile with objects)
 
 ## [0.9.0] - 2017-10-30
 ### Added
