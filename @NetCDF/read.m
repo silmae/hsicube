@@ -12,10 +12,21 @@ cargs = {g, 'file', filename, 'quantity', variable};
 
 % Read wavelength, fwhm and unit info. We assume that the wavelength unit
 % for fwhm is the same
-cargs = [cargs, 'wl', ncread(filename, 'wavelength')];
-cargs = [cargs, 'fwhm', ncread(filename, 'fwhm')];
-cargs = [cargs, 'wlu', ncreadatt(filename, 'wavelength', 'units')];
-
+try
+    cargs = [cargs, 'wl', ncread(filename, 'wavelength')];
+catch
+    warning('Wavelengths could not be found, using default value.');
+end
+try
+    cargs = [cargs, 'fwhm', ncread(filename, 'fwhm')];
+catch
+    warning('FWHMs could not be found, using default value.');
+end
+try
+    cargs = [cargs, 'wlu', ncreadatt(filename, 'wavelength', 'units')];
+catch
+    warning('Wavelength unit could not be found, using default value.');
+end
 
 % Construct the cube object
 cube = Cube(cargs{:});
